@@ -478,6 +478,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="content mt-3 mb-2">
       <div class="container-fluid">
         <router-view></router-view>
+        <vue-progress-bar></vue-progress-bar>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
