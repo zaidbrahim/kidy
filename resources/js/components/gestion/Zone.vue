@@ -4,10 +4,10 @@
             <div class="col-12">
               <div class="card border-dark">
                 <div class="card-header text-white bg-dark">
-                  <h3 cl ass="card-title">Utilisateurs</h3>
+                  <h3 cl ass="card-title">Zones</h3>
                   <div class="card-tools">
                     <div class="input-group input-group-sm">
-                        <button class="btn btn-success" @click="newModel">Ajouter <i class="fas fa-user-plus fa-fw"></i></button>
+                        <button class="btn btn-success" @click="newModel">Ajouter </button>
                     </div>
                   </div>
                 </div>
@@ -17,24 +17,22 @@
                         <tbody>
                             <tr>
                                 <th>ID</th>
-                                <th>Nom</th>
-                                <th>Email</th>
-                                <th>Type</th>
+                                <th>Zone</th>
+                                <th>Ville</th>
                                 <th>Date d'ajout</th>
                                 <th></th>
                             </tr>
-                            <tr v-for="user in users.data" :key="user.id">
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.name | upText }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.type | upText }}</td>
-                                <td>{{ user.created_at | myDate }}</td>
+                            <tr v-for="zone in zones.data" :key="zone.id">
+                                <td>{{ zone.id }}</td>
+                                <td>{{ zone.zone | upText }}</td>
+                                <td>{{ zone.ville.ville }}</td>
+                                <td>{{ zone.created_at | myDate }}</td>
                                 <td class="text-right">
-                                    <a href="#" @click="editModel(user)">
+                                    <a href="#" @click="editModel(zone)">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a href="#" @click="deleteUser(user.id)">
+                                    <a href="#" @click="deleteZone(zone.id)">
                                         <i class="fa fa-trash red"></i>
                                     </a>
                                 </td>
@@ -45,7 +43,7 @@
                 <!-- /.card-body -->
                 
                 <div class="card-footer">
-                    <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                    <pagination :data="zones" @pagination-change-page="getResults"></pagination>
                 </div>
                 <!--.card-footer -->
               </div>
@@ -62,35 +60,25 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 v-show="!editmode" class="modal-title" id="addNewLabel">Ajouter un nouveau utilisateur</h5>
-                        <h5 v-show="editmode" class="modal-title" id="addNewLabel">Modifier un utilisateur</h5>
+                        <h5 v-show="!editmode" class="modal-title" id="addNewLabel">Ajouter une zone</h5>
+                        <h5 v-show="editmode" class="modal-title" id="addNewLabel">Modifier une zone</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="editmode ? updateUser() : createUser()">
+                    <form @submit.prevent="editmode ? updateZone() : createZone()">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input v-model="form.name" placeholder="Nom" type="text" name="name" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                                <has-error :form="form" field="name"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <input v-model="form.email" placeholder="Email" type="email" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                                <has-error :form="form" field="email"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
-                                    <option value="">Select User Role</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">Utilisateur</option>
-                                    <option value="web">Web</option>
-                                </select>
-                                <has-error :form="form" field="type"></has-error>
+                                <input v-model="form.zone" placeholder="Zone" type="text" name="zone" class="form-control" :class="{ 'is-invalid': form.errors.has('zone') }">
+                                <has-error :form="form" field="zone"></has-error>
                             </div>
 
                             <div class="form-group">
-                                <input v-model="form.password" type="password" name="password" id="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                                <has-error :form="form" field="password"></has-error>
+                                <select v-model="form.ville_id" name="ville_id" id="ville_id" class="form-control">
+                                    <option value="" selected>Ville</option>
+                                    <option v-for="ville in villes.data" v-bind:value="ville.id">{{ ville.ville }}</option>
+                                </select>
+                                <has-error :form="form" field="ville"></has-error>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -110,15 +98,16 @@
         data() {
             return {
                 editmode: false,
-                users : {},
+                zones : {},
+                villes: {},
+                
+
                 form: new Form({ 
                     id: '',
-                    name : '',
-                    email:'',
-                    type: '',
-                    photo: '',
-                    password: ''
-                })
+                    zone: '',
+                    ville_id: '',
+                }), 
+                
             }
         },
 
@@ -129,35 +118,42 @@
                 $('#addNew').modal('show');
             },
 
-            editModel(user){
+            editModel(ville){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(user);
+                this.form.fill(ville);
             },
 
-            loadUsers(){
+            loadZones(){
                 if(this.$gate.isAdminOrUser()){
-                    axios.get("api/user").then(({ data }) => (this.users = data));
+                    axios.get("api/zone").then(({ data }) => (this.zones = data));
+                }
+            },
+            
+
+            loadVilles(){
+                if(this.$gate.isAdminOrUser()){
+                    axios.get("api/ville").then(({ data }) => (this.villes = data));
                 }
             },
 
             getResults(page = 1) {
-                axios.get('api/user?page=' + page)
+                axios.get('api/zone?page=' + page)
                     .then(response => {
-                        this.users = response.data;
+                        this.zones = response.data;
                     });
             },
 
-            createUser(){
+            createZone(){
                 this.$Progress.start();
-                this.form.post('api/user')
+                this.form.post('api/zone')
                 .then(() => {
                     Fire.$emit('Refresh');
                     $('#addNew').modal('hide')
                     toast.fire({
                         type: 'success',
-                        title: 'Utilisateur ajouter avec success'
+                        title: 'Zone ajoutée avec success'
                     })
                     this.$Progress.finish();
                 })
@@ -166,13 +162,13 @@
                 });
             },
 
-            updateUser(){
+            updateZone(){
                 this.$Progress.start();
-                this.form.put('api/user/'+this.form.id)
+                this.form.put('api/zone/'+this.form.id)
                 .then(() => {
                     swal.fire(
                         'Modifié!',
-                        'Utilisateur Modifier.',
+                        'Zone Modifiée.',
                         'success'
                     );
                     $('#addNew').modal('hide')
@@ -184,7 +180,7 @@
                 })
             },
 
-            deleteUser(id){
+            deleteZone(id){
                 swal.fire({
                     title: 'Êtes-vous sûr?',
                     text: "Vous ne pourrez pas revenir en arrière!",
@@ -197,11 +193,11 @@
                     .then((result) => {
                         // send request to the serve
                         if (result.value) {
-                            this.form.delete('api/user/'+id)
+                            this.form.delete('api/zone/'+id)
                             .then(() => {
                                 swal.fire(
                                     'Supprimé!',
-                                    'Utilisateur supprimé.',
+                                    'Zone supprimée.',
                                     'success'
                                 );
                                 Fire.$emit('Refresh');
@@ -219,19 +215,18 @@
         },
 
         created() {
-            this.loadUsers();
+            this.loadZones();
+            this.loadVilles();
             Fire.$on('Refresh', () => {
-                this.loadUsers();
+                this.loadZones();
+                this.loadVilles();
             });
-            // refreche Page evry 3s
-            //setInterval(() => this.loadUsers(), 3000);
-
             //search
             Fire.$on('searching', () => {
                 let query = this.$parent.search;  
-                axios.get('api/findUser?q='+query)
+                axios.get('api/findZone?q='+query)
                 .then((data) => {
-                    this.users = data.data               
+                    this.zones = data.data               
                 })
                 .catch(() => {
                     swal.fire(

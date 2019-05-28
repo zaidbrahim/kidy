@@ -4,10 +4,10 @@
             <div class="col-12">
               <div class="card border-dark">
                 <div class="card-header text-white bg-dark">
-                  <h3 cl ass="card-title">Utilisateurs</h3>
+                  <h3 cl ass="card-title">Catégories</h3>
                   <div class="card-tools">
                     <div class="input-group input-group-sm">
-                        <button class="btn btn-success" @click="newModel">Ajouter <i class="fas fa-user-plus fa-fw"></i></button>
+                        <button class="btn btn-success" @click="newModel">Ajouter</button>
                     </div>
                   </div>
                 </div>
@@ -17,24 +17,20 @@
                         <tbody>
                             <tr>
                                 <th>ID</th>
-                                <th>Nom</th>
-                                <th>Email</th>
-                                <th>Type</th>
+                                <th>Catégorie</th>
                                 <th>Date d'ajout</th>
                                 <th></th>
                             </tr>
-                            <tr v-for="user in users.data" :key="user.id">
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.name | upText }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.type | upText }}</td>
-                                <td>{{ user.created_at | myDate }}</td>
+                            <tr v-for="categorie in categories.data" :key="categorie.id">
+                                <td>{{ categorie.id }}</td>
+                                <td>{{ categorie.categorie | upText }}</td>
+                                <td>{{ categorie.created_at | myDate }}</td>
                                 <td class="text-right">
-                                    <a href="#" @click="editModel(user)">
+                                    <a href="#" @click="editModel(categorie)">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a href="#" @click="deleteUser(user.id)">
+                                    <a href="#" @click="deleteCategorie(categorie.id)">
                                         <i class="fa fa-trash red"></i>
                                     </a>
                                 </td>
@@ -45,7 +41,7 @@
                 <!-- /.card-body -->
                 
                 <div class="card-footer">
-                    <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                    <pagination :data="categories" @pagination-change-page="getResults"></pagination>
                 </div>
                 <!--.card-footer -->
               </div>
@@ -62,35 +58,17 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 v-show="!editmode" class="modal-title" id="addNewLabel">Ajouter un nouveau utilisateur</h5>
-                        <h5 v-show="editmode" class="modal-title" id="addNewLabel">Modifier un utilisateur</h5>
+                        <h5 v-show="!editmode" class="modal-title" id="addNewLabel">Ajouter une nouvelle catégorie</h5>
+                        <h5 v-show="editmode" class="modal-title" id="addNewLabel">Modifier une catégorie</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="editmode ? updateUser() : createUser()">
+                    <form @submit.prevent="editmode ? updateCategorie() : createCategorie()">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input v-model="form.name" placeholder="Nom" type="text" name="name" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                                <has-error :form="form" field="name"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <input v-model="form.email" placeholder="Email" type="email" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                                <has-error :form="form" field="email"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
-                                    <option value="">Select User Role</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">Utilisateur</option>
-                                    <option value="web">Web</option>
-                                </select>
-                                <has-error :form="form" field="type"></has-error>
-                            </div>
-
-                            <div class="form-group">
-                                <input v-model="form.password" type="password" name="password" id="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                                <has-error :form="form" field="password"></has-error>
+                                <input v-model="form.categorie" placeholder="Catégorie" type="text" name="categorie" class="form-control" :class="{ 'is-invalid': form.errors.has('categorie') }">
+                                <has-error :form="form" field="categorie"></has-error>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -110,14 +88,10 @@
         data() {
             return {
                 editmode: false,
-                users : {},
+                categories : {},
                 form: new Form({ 
                     id: '',
-                    name : '',
-                    email:'',
-                    type: '',
-                    photo: '',
-                    password: ''
+                    categorie : ''
                 })
             }
         },
@@ -129,35 +103,35 @@
                 $('#addNew').modal('show');
             },
 
-            editModel(user){
+            editModel(categorie){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(user);
+                this.form.fill(categorie);
             },
 
-            loadUsers(){
+            loadCategories(){
                 if(this.$gate.isAdminOrUser()){
-                    axios.get("api/user").then(({ data }) => (this.users = data));
+                    axios.get("api/categorie").then(({ data }) => (this.categories = data));
                 }
             },
 
             getResults(page = 1) {
-                axios.get('api/user?page=' + page)
+                axios.get('api/categorie?page=' + page)
                     .then(response => {
-                        this.users = response.data;
+                        this.categories = response.data;
                     });
             },
 
-            createUser(){
+            createCategorie(){
                 this.$Progress.start();
-                this.form.post('api/user')
+                this.form.post('api/categorie')
                 .then(() => {
                     Fire.$emit('Refresh');
                     $('#addNew').modal('hide')
                     toast.fire({
                         type: 'success',
-                        title: 'Utilisateur ajouter avec success'
+                        title: 'Catégorie ajouter avec success'
                     })
                     this.$Progress.finish();
                 })
@@ -166,13 +140,13 @@
                 });
             },
 
-            updateUser(){
+            updateCategorie(){
                 this.$Progress.start();
-                this.form.put('api/user/'+this.form.id)
+                this.form.put('api/categorie/'+this.form.id)
                 .then(() => {
                     swal.fire(
                         'Modifié!',
-                        'Utilisateur Modifier.',
+                        'Catégorie Modifier.',
                         'success'
                     );
                     $('#addNew').modal('hide')
@@ -184,7 +158,7 @@
                 })
             },
 
-            deleteUser(id){
+            deleteCategorie(id){
                 swal.fire({
                     title: 'Êtes-vous sûr?',
                     text: "Vous ne pourrez pas revenir en arrière!",
@@ -197,11 +171,11 @@
                     .then((result) => {
                         // send request to the serve
                         if (result.value) {
-                            this.form.delete('api/user/'+id)
+                            this.form.delete('api/categorie/'+id)
                             .then(() => {
                                 swal.fire(
                                     'Supprimé!',
-                                    'Utilisateur supprimé.',
+                                    'Catégorie supprimé.',
                                     'success'
                                 );
                                 Fire.$emit('Refresh');
@@ -219,19 +193,17 @@
         },
 
         created() {
-            this.loadUsers();
+            this.loadCategories();
             Fire.$on('Refresh', () => {
-                this.loadUsers();
+                this.loadCategories();
             });
-            // refreche Page evry 3s
-            //setInterval(() => this.loadUsers(), 3000);
 
             //search
             Fire.$on('searching', () => {
                 let query = this.$parent.search;  
-                axios.get('api/findUser?q='+query)
+                axios.get('api/findCategorie?q='+query)
                 .then((data) => {
-                    this.users = data.data               
+                    this.categories = data.data               
                 })
                 .catch(() => {
                     swal.fire(

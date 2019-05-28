@@ -17,10 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'user' => 'API\UserController',
-]);
+Route::apiResources(['user' => 'API\UserController',]);
+Route::apiResources(['categorie' => 'API\CategorieController',]);
+Route::apiResources(['ville' => 'API\VilleController',]);
+Route::apiResources(['zone' => 'API\ZoneController',]);
 
+Route::get('findUser', 'API\UserController@search');
+Route::get('findCategorie', 'API\CategorieController@search');
+Route::get('findVille', 'API\VilleController@search');
+Route::get('findZone', 'API\ZoneController@search');
 
-
-
+Route::get('profile', 'API\UserController@profile');
+Route::put('profile', 'API\UserController@updateProfile');
