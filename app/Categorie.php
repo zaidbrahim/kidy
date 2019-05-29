@@ -14,4 +14,10 @@ class Categorie extends Model
     protected $fillable = [
         'categorie',
     ];
+
+    public function etablissements() {
+
+        return $this->hasMany('App\Etablissement');
+        
+    } 
 }

@@ -18,4 +18,10 @@ class Ville extends Model
         return $this->hasMany('App\Zone');
         
     }
+
+    public function etablissements() {
+
+        return $this->hasMany('App\Etablissement');
+        
+    }  
 }

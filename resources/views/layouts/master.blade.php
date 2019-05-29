@@ -235,9 +235,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
           <li class="nav-item">
-            <router-link to="/etablissement" class="nav-link">
+            <router-link to="/etablissements" class="nav-link">
             <i class="fas fa-school fa-cogs"></i>
-              <p>Etablissement</p>
+              <p>Etablissements</p>
             </router-link>
           </li> 
           @endcan

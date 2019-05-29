@@ -17,7 +17,8 @@ class CreateEtablissementsTables extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('type');
+            $table->integer('categorie_id')->unsigned()->nullable();
+            $table->foreign('categorie_id')->references('id')->on('categories');
             $table->string('nom_contact');
             $table->string('email');
             $table->string('etablissement');
@@ -30,8 +31,10 @@ class CreateEtablissementsTables extends Migration
             $table->string('fax')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('maps')->nullable();
+            $table->string('photo')->default('default.png');
             $table->string('site_web')->nullable();
-            $table->string('mensualite')->nullable();
+            $table->string('mensualite_min')->nullable();
+            $table->string('mensualite_max')->nullable();
             $table->string('niveau_etude')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row container-fluid" v-if="$gate.isAdmin()">
+        <div class="row container-fluid" v-if="$gate.isAdminOrUser()">
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box">
                 <span class="info-box-icon bg-info elevation-1"><i class="fa fa-gear"></i></span>
@@ -648,7 +648,7 @@
           </div>
           <!-- /.col -->
         </div>
-         <div class="row justify-content-center" v-if="!$gate.isAdmin()">
+         <div class="row justify-content-center" v-if="!$gate.isAdminOrUser()">
            <not-found></not-found> 
         </div>     
     </div>

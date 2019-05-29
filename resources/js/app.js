@@ -35,6 +35,7 @@ Vue.use(VueProgressBar, {
 Vue.use(VueRouter);
 
 let routes = [
+    { path: '/home', component: require('./components/Dashboard.vue').default },
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/developer', component: require('./components/Developer.vue').default },
     { path: '/profil', component: require('./components/Profil.vue').default },
@@ -42,6 +43,7 @@ let routes = [
     { path: '/villes', component: require('./components/gestion/Ville.vue').default },
     { path: '/zones', component: require('./components/gestion/Zone.vue').default },
     { path: '/categories', component: require('./components/gestion/Categorie.vue').default },
+    { path: '/etablissements', component: require('./components/gestion/Etablissement.vue').default },
     { path: '*', component: require('./components/NotFound.vue').default }
 
   ]

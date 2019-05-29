@@ -19,4 +19,11 @@ class Zone extends Model
         return $this->belongsTo('App\Ville');
     }
 
+
+    public function etablissements() {
+
+        return $this->hasMany('App\Etablissement');
+        
+    } 
+
 }
