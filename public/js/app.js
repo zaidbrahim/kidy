@@ -3505,10 +3505,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       editmode: false,
-      etablissements: {},
-      zones: {},
-      villes: {},
-      categories: {},
+      getdata: {},
       form: new Form({
         id: '',
         categorie_id: '',
@@ -3549,46 +3546,16 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$gate.isAdminOrUser()) {
         axios.get("api/etablissement").then(function (_ref) {
           var data = _ref.data;
-          return _this.etablissements = data;
-        });
-      }
-    },
-    loadZones: function loadZones() {
-      var _this2 = this;
-
-      if (this.$gate.isAdminOrUser()) {
-        axios.get("api/zone").then(function (_ref2) {
-          var data = _ref2.data;
-          return _this2.zones = data;
-        });
-      }
-    },
-    loadVilles: function loadVilles() {
-      var _this3 = this;
-
-      if (this.$gate.isAdminOrUser()) {
-        axios.get("api/ville").then(function (_ref3) {
-          var data = _ref3.data;
-          return _this3.villes = data;
-        });
-      }
-    },
-    loadCategories: function loadCategories() {
-      var _this4 = this;
-
-      if (this.$gate.isAdminOrUser()) {
-        axios.get("api/categorie").then(function (_ref4) {
-          var data = _ref4.data;
-          return _this4.categories = data;
+          return _this.getdata = data;
         });
       }
     },
     getResults: function getResults() {
-      var _this5 = this;
+      var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get('api/etablissement?page=' + page).then(function (response) {
-        _this5.etablissements = response.data;
+        _this2.getdata = response.data;
       });
     },
     getPhotoEtablissement: function getPhotoEtablissement() {
@@ -3596,14 +3563,14 @@ __webpack_require__.r(__webpack_exports__);
       return photo;
     },
     getPoto: function getPoto(e) {
-      var _this6 = this;
+      var _this3 = this;
 
       var file = e.target.files[0];
       var reader = new FileReader();
 
       if (file['size'] < 2111775) {
         reader.onloadend = function (file) {
-          _this6.form.photo = reader.result;
+          _this3.form.photo = reader.result;
         };
 
         reader.readAsDataURL(file);
@@ -3616,7 +3583,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     createEtablissement: function createEtablissement() {
-      var _this7 = this;
+      var _this4 = this;
 
       this.$Progress.start();
       this.form.post('api/etablissement').then(function () {
@@ -3627,11 +3594,11 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Etablissement ajouté avec success'
         });
 
-        _this7.$Progress.finish();
+        _this4.$Progress.finish();
       })["catch"](function () {});
     },
     updateEtablissement: function updateEtablissement() {
-      var _this8 = this;
+      var _this5 = this;
 
       this.$Progress.start();
       this.form.put('api/etablissement/' + this.form.id).then(function () {
@@ -3639,13 +3606,13 @@ __webpack_require__.r(__webpack_exports__);
         $('#addNew').modal('hide');
         Fire.$emit('Refresh');
 
-        _this8.$Progress.finish();
+        _this5.$Progress.finish();
       })["catch"](function () {
-        _this8.$Progress.fail();
+        _this5.$Progress.fail();
       });
     },
     deleteEtablissement: function deleteEtablissement(id) {
-      var _this9 = this;
+      var _this6 = this;
 
       swal.fire({
         title: 'Êtes-vous sûr?',
@@ -3658,7 +3625,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         // send request to the serve
         if (result.value) {
-          _this9.form["delete"]('api/etablissement/' + id).then(function () {
+          _this6.form["delete"]('api/etablissement/' + id).then(function () {
             swal.fire('Supprimé!', 'Etablissement supprimé.', 'success');
             Fire.$emit('Refresh');
           })["catch"](function () {
@@ -3669,26 +3636,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this10 = this;
+    var _this7 = this;
 
     this.loadEtablissements();
-    this.loadZones();
-    this.loadVilles();
-    this.loadCategories();
     Fire.$on('Refresh', function () {
-      _this10.loadEtablissements();
-
-      _this10.loadZones();
-
-      _this10.loadVilles();
-
-      _this10.loadCategories();
+      _this7.loadEtablissements();
     }); //search
 
     Fire.$on('searching', function () {
-      var query = _this10.$parent.search;
+      var query = _this7.$parent.search;
       axios.get('api/findEtablissement?q=' + query).then(function (data) {
-        _this10.etablissements = data.data;
+        _this7.getdata = data.data;
       })["catch"](function () {
         swal.fire('Failed!', 'There was somehing wrong.', 'warning');
       });
@@ -71491,34 +71449,60 @@ var render = function() {
                     [
                       _vm._m(0),
                       _vm._v(" "),
-                      _vm._l(_vm.etablissements.data, function(etablissement) {
+                      _vm._l(_vm.getdata.etablissements.data, function(
+                        etablissement
+                      ) {
                         return _c("tr", { key: etablissement.id }, [
-                          _c("td", [_vm._v(_vm._s(etablissement.id))]),
-                          _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(etablissement.categorie.categorie))
+                            _c("small", [_vm._v(_vm._s(etablissement.id))])
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("upText")(etablissement.etablissement)
+                            _c("small", [
+                              _vm._v(_vm._s(etablissement.categorie.categorie))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("small", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm._f("upText")(etablissement.etablissement)
+                                )
                               )
-                            )
+                            ])
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(etablissement.ville.ville))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(etablissement.nom_contact))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(etablissement.tel))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(etablissement.whatsapp))]),
+                          _c("td", [
+                            _c("small", [
+                              _vm._v(_vm._s(etablissement.ville.ville))
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(
-                              _vm._s(_vm._f("myDate")(etablissement.created_at))
-                            )
+                            _c("small", [
+                              _vm._v(_vm._s(etablissement.nom_contact))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("small", [_vm._v(_vm._s(etablissement.tel))])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("small", [
+                              _vm._v(_vm._s(etablissement.whatsapp))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("small", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm._f("myDate")(etablissement.created_at)
+                                )
+                              )
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("td", { staticClass: "text-right" }, [
@@ -71563,7 +71547,7 @@ var render = function() {
                 { staticClass: "card-footer" },
                 [
                   _c("pagination", {
-                    attrs: { data: _vm.etablissements },
+                    attrs: { data: _vm.getdata.etablissements },
                     on: { "pagination-change-page": _vm.getResults }
                   })
                 ],
@@ -71710,7 +71694,7 @@ var render = function() {
                                       [_vm._v("Type")]
                                     ),
                                     _vm._v(" "),
-                                    _vm._l(_vm.categories.data, function(
+                                    _vm._l(_vm.getdata.categories, function(
                                       categorie
                                     ) {
                                       return _c(
@@ -71840,7 +71824,7 @@ var render = function() {
                                           [_vm._v("Ville")]
                                         ),
                                         _vm._v(" "),
-                                        _vm._l(_vm.villes.data, function(
+                                        _vm._l(_vm.getdata.villes, function(
                                           ville
                                         ) {
                                           return _c(
@@ -71917,7 +71901,9 @@ var render = function() {
                                           [_vm._v("Zone")]
                                         ),
                                         _vm._v(" "),
-                                        _vm._l(_vm.zones.data, function(zone) {
+                                        _vm._l(_vm.getdata.zones, function(
+                                          zone
+                                        ) {
                                           return _c(
                                             "option",
                                             { domProps: { value: zone.id } },

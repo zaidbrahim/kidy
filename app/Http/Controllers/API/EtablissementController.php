@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Etablissement;
 use App\Zone;
 use App\Ville;
+use App\Categorie;
 
 class EtablissementController extends Controller
 {
@@ -29,7 +30,19 @@ class EtablissementController extends Controller
                     ->with('ville')
                     ->with('categorie')
                     ->paginate(10);
-            return $etablissements;
+
+            $villes = Ville::orderBy('ville','DESC')->get();
+            $zones = Zone::orderBy('zone','DESC')->get();
+            $categories = Categorie::orderBy('categorie','DESC')->get();
+        
+            return [
+               'etablissements' => $etablissements,
+               'villes' => $villes,
+               'zones' => $zones,
+               'categories' => $categories,
+            ];
+
+            
         }
 
 
@@ -45,7 +58,10 @@ class EtablissementController extends Controller
     {
         $this->validate($request, [
 
-            'type' => 'required|max:255',
+            'zone_id' => 'required',
+            'ville_id' => 'required',
+
+            'type' => 'required',
             //'email' => 'required|email',
             'etablissement'=> 'required|min:3|max:255',
             'nom_contact'=> 'required|min:3',
@@ -112,14 +128,22 @@ class EtablissementController extends Controller
 
         $this->validate($request, [
 
-            'zone' => 'required|string|max:191',
+            'zone_id' => 'required',
             'ville_id' => 'required',
+
+            'categorie_id' => 'required',
+            //'email' => 'required|email',
+            'etablissement'=> 'required|min:3|max:255',
+            'nom_contact'=> 'required|min:3',
+            'tel'=> 'numeric',
+            //'fax'=> 'numeric',
+            //'whatsapp'=> 'numeric',
 
         ]);
 
         $zone->update($request->all());
 
-        return ['message' => 'Zone modifiée'];
+        return ['message' => 'Etablissement modifié'];
     }
 
     /**
@@ -132,23 +156,45 @@ class EtablissementController extends Controller
     {
         $this->authorize('isAdminOrUser');
         
-        $zone = Etablissement::findOrFail($id);
-        $zone->delete();
-        return ['message' => 'Zone Supprimée'];
+        $etablissement = Etablissement::findOrFail($id);
+        $etablissement->delete();
+        return ['message' => 'Etablissement Supprimé'];
     }
 
     public function search()
     {
         if ($search = \Request::get('q')){
             $etablissements = Etablissement::where(function($query) use ($search){
-                $query->where('zone', 'LIKE', "%$search%");
-            })->paginate(10);
+                $query->where('etablissement', 'LIKE', "%$search%")
+                      ->orWhere('nom_contact', 'LIKE', "%$search%")
+                      ->orWhere('tel', 'LIKE', "%$search%")
+                      ->orWhere('whatsapp', 'LIKE', "%$search%")
+                      ->orWhere('whatsapp', 'LIKE', "%$search%");
+            })
+            ->with('categorie')
+            ->with('zone')
+            ->with('ville')
+            ->paginate(10);
         }
         else{
-            $etablissements = Etablissement::latest()->paginate(10);
+            $etablissements = Etablissement::latest()
+                ->with('zone')
+                ->with('ville')
+                ->with('categorie')
+                ->paginate(10);
         }
 
-        return $etablissements;
+        $villes = Ville::orderBy('ville','DESC')->get();
+        $zones = Zone::orderBy('zone','DESC')->get();
+        $categories = Categorie::orderBy('categorie','DESC')->get();
+    
+        return [
+            'etablissements' => $etablissements,
+            'villes' => $villes,
+            'zones' => $zones,
+            'categories' => $categories,
+        ];
+
 
     }
 }

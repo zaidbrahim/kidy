@@ -31,7 +31,7 @@ class CreateEtablissementsTables extends Migration
             $table->string('fax')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('maps')->nullable();
-            $table->string('photo')->default('default.png');
+            $table->longText('photo')->default('default.png');
             $table->string('site_web')->nullable();
             $table->string('mensualite_min')->nullable();
             $table->string('mensualite_max')->nullable();

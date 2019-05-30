@@ -26,15 +26,15 @@
                                 <th>Date d'ajout</th>
                                 <th></th>
                             </tr>
-                            <tr v-for="etablissement in etablissements.data" :key="etablissement.id">
-                                <td>{{ etablissement.id }}</td>
-                                <td>{{ etablissement.categorie.categorie }}</td>
-                                <td>{{ etablissement.etablissement | upText }}</td>
-                                <td>{{ etablissement.ville.ville }}</td>
-                                <td>{{ etablissement.nom_contact }}</td>
-                                <td>{{ etablissement.tel }}</td>
-                                <td>{{ etablissement.whatsapp }}</td>
-                                <td>{{ etablissement.created_at | myDate }}</td>
+                            <tr v-for="etablissement in getdata.etablissements.data" :key="etablissement.id">
+                                <td><small>{{ etablissement.id }}</small></td>
+                                <td><small>{{ etablissement.categorie.categorie }}</small></td>
+                                <td><small>{{ etablissement.etablissement | upText }}</small></td>
+                                <td><small>{{ etablissement.ville.ville }}</small></td>
+                                <td><small>{{ etablissement.nom_contact }}</small></td>
+                                <td><small>{{ etablissement.tel }}</small></td>
+                                <td><small>{{ etablissement.whatsapp }}</small></td>
+                                <td><small>{{ etablissement.created_at | myDate }}</small></td>
                                 <td class="text-right">
                                     <a href="#" @click="editModel(etablissement)">
                                         <i class="fas fa-edit"></i>
@@ -51,7 +51,7 @@
                 <!-- /.card-body -->
                 
                 <div class="card-footer">
-                    <pagination :data="etablissements" @pagination-change-page="getResults"></pagination>
+                    <pagination :data="getdata.etablissements" @pagination-change-page="getResults"></pagination>
                 </div>
                 <!--.card-footer -->
               </div>
@@ -83,7 +83,7 @@
                                             <div class="form-group">
                                                 <select v-model="form.categorie_id" name="type" id="type" class="form-control">
                                                     <option value="" selected="selected" disabled>Type</option>
-                                                    <option v-for="categorie in categories.data" v-bind:value="categorie.id">{{ categorie.categorie }}</option>
+                                                    <option v-for="categorie in getdata.categories" v-bind:value="categorie.id">{{ categorie.categorie }}</option>
                                                 </select>
                                                 <has-error :form="form" field="type"></has-error>
                                             </div>
@@ -100,7 +100,7 @@
                                                 <div class="form-group">
                                                     <select v-model="form.ville_id" name="ville_id" id="ville_id" class="form-control">
                                                         <option value="" selected>Ville</option>
-                                                        <option v-for="ville in villes.data" v-bind:value="ville.id">{{ ville.ville }}</option>
+                                                        <option v-for="ville in getdata.villes" v-bind:value="ville.id">{{ ville.ville }}</option>
                                                     </select>
                                                     <has-error :form="form" field="ville"></has-error>
                                                 </div>
@@ -109,7 +109,7 @@
                                                 <div class="form-group">
                                                     <select v-model="form.zone_id" name="zone_id" id="zone_id" class="form-control">
                                                         <option value="" selected>Zone</option>
-                                                        <option v-for="zone in zones.data" v-bind:value="zone.id">{{ zone.zone }}</option>
+                                                        <option v-for="zone in getdata.zones" v-bind:value="zone.id">{{ zone.zone }}</option>
                                                     </select>
                                                     <has-error :form="form" field="zone"></has-error>
                                                 </div>
@@ -236,10 +236,8 @@
         data() {
             return {
                 editmode: false,
-                etablissements : {},
-                zones : {},
-                villes: {},
-                categories: {},
+                getdata : {},
+                
                 
                 form: new Form({ 
                     id: '',
@@ -280,32 +278,15 @@
 
             loadEtablissements(){
                 if(this.$gate.isAdminOrUser()){
-                    axios.get("api/etablissement").then(({ data }) => (this.etablissements = data));
+                    axios.get("api/etablissement").then(({ data }) => (this.getdata = data));
                 }
             },
 
-            loadZones(){
-                if(this.$gate.isAdminOrUser()){
-                    axios.get("api/zone").then(({ data }) => (this.zones = data));
-                }
-            },
-    
-            loadVilles(){
-                if(this.$gate.isAdminOrUser()){
-                    axios.get("api/ville").then(({ data }) => (this.villes = data));
-                }
-            },
-
-            loadCategories(){
-                if(this.$gate.isAdminOrUser()){
-                    axios.get("api/categorie").then(({ data }) => (this.categories = data));
-                }
-            },
 
             getResults(page = 1) {
                 axios.get('api/etablissement?page=' + page)
                     .then(response => {
-                        this.etablissements = response.data;
+                        this.getdata = response.data;
                     });
             },
 
@@ -405,21 +386,17 @@
 
         created() {
             this.loadEtablissements();
-            this.loadZones();
-            this.loadVilles();
-            this.loadCategories();
+            
             Fire.$on('Refresh', () => {
                 this.loadEtablissements();
-                this.loadZones();
-                this.loadVilles();
-                this.loadCategories();
+                
             });
             //search
             Fire.$on('searching', () => {
                 let query = this.$parent.search;  
                 axios.get('api/findEtablissement?q='+query)
                 .then((data) => {
-                    this.etablissements = data.data               
+                    this.getdata = data.data               
                 })
                 .catch(() => {
                     swal.fire(
