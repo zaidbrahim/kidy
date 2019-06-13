@@ -31,11 +31,12 @@ class CreateEtablissementsTables extends Migration
             $table->string('fax')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('maps')->nullable();
-            $table->longText('photo')->default('default.png');
+            $table->string('photo')->default('default.png');
             $table->string('site_web')->nullable();
             $table->string('mensualite_min')->nullable();
             $table->string('mensualite_max')->nullable();
             $table->string('niveau_etude')->nullable();
+            $table->boolean('etat')->default('1');
             $table->timestamps();
             $table->softDeletes();
 

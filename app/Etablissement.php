@@ -11,7 +11,7 @@ class Etablissement extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'categorie_id', 'user_id', 'etablissement', 'email', 'adresse', 'zone_id', 'ville_id', 'maps', 'mensualite_min', 'mensualite_max', 'niveau_etude', 'tel', 'fax', 'whatsapp', 'site_web', 'photo', 'nom_contact'
+        'categorie_id', 'user_id', 'etablissement', 'description', 'email', 'adresse', 'zone_id', 'ville_id', 'maps', 'mensualite_min', 'mensualite_max', 'niveau_etude', 'tel', 'fax', 'whatsapp', 'site_web', 'photo', 'nom_contact', 'type'
         
     ];
 
@@ -33,6 +33,12 @@ class Etablissement extends Model
     public function zone(){
 
         return $this->belongsTo('App\Zone');
+    }
+
+    public function niveau_etudes(){
+
+        return $this->belongsToMany('App\Niveau_etude');
+    
     }
 
 

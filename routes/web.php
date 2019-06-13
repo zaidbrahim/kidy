@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('invoice', function(){
     return view('invoice');
@@ -21,6 +18,12 @@ Route::get('invoice', function(){
 
 Auth::routes();
 
+Route::get('/', 'IndexController@home')->name('index');
+Route::get('/admin', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('annuaire/{categorie?}','AnnuaireController@index')->name('annuaire');
+
 
 Route::get('{path}', "HomeController@index")->where('path', '([A-z\d-\/_.]+)?');

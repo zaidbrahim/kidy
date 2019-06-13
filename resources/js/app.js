@@ -36,6 +36,7 @@ Vue.use(VueRouter);
 
 let routes = [
     { path: '/home', component: require('./components/Dashboard.vue').default },
+    { path: '/admin', component: require('./components/Dashboard.vue').default },
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/developer', component: require('./components/Developer.vue').default },
     { path: '/profil', component: require('./components/Profil.vue').default },

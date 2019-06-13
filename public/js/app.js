@@ -3501,6 +3501,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3511,6 +3519,8 @@ __webpack_require__.r(__webpack_exports__);
         categorie_id: '',
         user_id: '',
         etablissement: '',
+        descirption: '',
+        etat: 1,
         nom_contact: '',
         email: '',
         adresse: '',
@@ -3524,7 +3534,7 @@ __webpack_require__.r(__webpack_exports__);
         site_web: '',
         mensualite_min: '',
         mensualite_max: '',
-        niveau_etude: []
+        niveau_etude_id: []
       })
     };
   },
@@ -3534,11 +3544,11 @@ __webpack_require__.r(__webpack_exports__);
       this.form.reset();
       $('#addNew').modal('show');
     },
-    editModel: function editModel(ville) {
+    editModel: function editModel(etablissement) {
       this.editmode = true;
       this.form.reset();
       $('#addNew').modal('show');
-      this.form.fill(ville);
+      this.form.fill(etablissement);
     },
     loadEtablissements: function loadEtablissements() {
       var _this = this;
@@ -3646,7 +3656,8 @@ __webpack_require__.r(__webpack_exports__);
     Fire.$on('searching', function () {
       var query = _this7.$parent.search;
       axios.get('api/findEtablissement?q=' + query).then(function (data) {
-        _this7.getdata = data.data;
+        // this.getdata = data.data
+        _this7.getdata = data;
       })["catch"](function () {
         swal.fire('Failed!', 'There was somehing wrong.', 'warning');
       });
@@ -71422,8 +71433,8 @@ var render = function() {
     _vm.$gate.isAdminOrUser()
       ? _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-12" }, [
-            _c("div", { staticClass: "card border-dark" }, [
-              _c("div", { staticClass: "card-header text-white bg-dark" }, [
+            _c("div", { staticClass: "card card-danger card-outline" }, [
+              _c("div", { staticClass: "card-header no-border" }, [
                 _c("h3", { attrs: { cl: "", ass: "card-title" } }, [
                   _vm._v("Etablissements")
                 ]),
@@ -71442,102 +71453,96 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body table-responsive p-0" }, [
+              _c("div", { staticClass: "card-body p-0" }, [
                 _c("table", { staticClass: "table table-hover" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
                   _c(
                     "tbody",
-                    [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _vm._l(_vm.getdata.etablissements.data, function(
-                        etablissement
-                      ) {
-                        return _c("tr", { key: etablissement.id }, [
-                          _c("td", [
-                            _c("small", [_vm._v(_vm._s(etablissement.id))])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [
-                              _vm._v(_vm._s(etablissement.categorie.categorie))
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [
-                              _vm._v(
-                                _vm._s(
-                                  _vm._f("upText")(etablissement.etablissement)
-                                )
+                    _vm._l(_vm.getdata.etablissements.data, function(
+                      etablissement
+                    ) {
+                      return _c("tr", { key: etablissement.id }, [
+                        _c("td", [
+                          _c("small", [_vm._v(_vm._s(etablissement.id))])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [
+                            _vm._v(_vm._s(etablissement.categorie.categorie))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("upText")(etablissement.etablissement)
                               )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [
-                              _vm._v(_vm._s(etablissement.ville.ville))
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [
-                              _vm._v(_vm._s(etablissement.nom_contact))
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [_vm._v(_vm._s(etablissement.tel))])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [
-                              _vm._v(_vm._s(etablissement.whatsapp))
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("small", [
-                              _vm._v(
-                                _vm._s(
-                                  _vm._f("myDate")(etablissement.created_at)
-                                )
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-right" }, [
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.editModel(etablissement)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fas fa-edit" })]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deleteEtablissement(
-                                      etablissement.id
-                                    )
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-trash red" })]
                             )
                           ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [
+                            _vm._v(_vm._s(etablissement.ville.ville))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [
+                            _vm._v(_vm._s(etablissement.nom_contact))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [_vm._v(_vm._s(etablissement.tel))])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [_vm._v(_vm._s(etablissement.whatsapp))])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("small", [
+                            _vm._v(
+                              _vm._s(_vm._f("myDate")(etablissement.created_at))
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editModel(etablissement)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-edit" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteEtablissement(
+                                    etablissement.id
+                                  )
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-trash red" })]
+                          )
                         ])
-                      })
-                    ],
-                    2
+                      ])
+                    }),
+                    0
                   )
                 ])
               ]),
@@ -71585,7 +71590,7 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
+              _c("div", { staticClass: "modal-header bg-primary" }, [
                 _c(
                   "h5",
                   {
@@ -71645,6 +71650,10 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c("label", { attrs: { for: "type" } }, [
+                                  _vm._v("Type")
+                                ]),
+                                _vm._v(" "),
                                 _c(
                                   "select",
                                   {
@@ -71720,6 +71729,12 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c(
+                                  "label",
+                                  { attrs: { for: "Etablissement" } },
+                                  [_vm._v("Etablissement")]
+                                ),
+                                _vm._v(" "),
                                 _c("input", {
                                   directives: [
                                     {
@@ -71773,6 +71788,10 @@ var render = function() {
                                   "div",
                                   { staticClass: "form-group" },
                                   [
+                                    _c("label", { attrs: { for: "ville" } }, [
+                                      _vm._v("Ville")
+                                    ]),
+                                    _vm._v(" "),
                                     _c(
                                       "select",
                                       {
@@ -71850,6 +71869,10 @@ var render = function() {
                                   "div",
                                   { staticClass: "form-group" },
                                   [
+                                    _c("label", { attrs: { for: "zone" } }, [
+                                      _vm._v("Zone")
+                                    ]),
+                                    _vm._v(" "),
                                     _c(
                                       "select",
                                       {
@@ -71925,263 +71948,77 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "col-md-12" }, [
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.niveau_etude,
-                                    expression: "form.niveau_etude"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  type: "checkbox",
-                                  name: "niveau_etude[]",
-                                  value: "creche",
-                                  id: "creche"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.niveau_etude)
-                                    ? _vm._i(_vm.form.niveau_etude, "creche") >
-                                      -1
-                                    : _vm.form.niveau_etude
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.niveau_etude,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "creche",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
-                                      }
-                                    } else {
-                                      _vm.$set(_vm.form, "niveau_etude", $$c)
-                                    }
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
                               _c(
                                 "label",
-                                {
-                                  staticClass: "form-check-label",
-                                  attrs: { for: "creche" }
-                                },
-                                [_vm._v("Créche")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.niveau_etude,
-                                    expression: "form.niveau_etude"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  type: "checkbox",
-                                  name: "niveau_etude[]",
-                                  value: "primair",
-                                  id: "primair"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.niveau_etude)
-                                    ? _vm._i(_vm.form.niveau_etude, "primair") >
-                                      -1
-                                    : _vm.form.niveau_etude
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.niveau_etude,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "primair",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
-                                      }
-                                    } else {
-                                      _vm.$set(_vm.form, "niveau_etude", $$c)
-                                    }
-                                  }
-                                }
-                              }),
+                                { attrs: { for: "niveau_etude_id" } },
+                                [_vm._v("Niveau d'etudes")]
+                              ),
                               _vm._v(" "),
                               _c(
-                                "label",
+                                "select",
                                 {
-                                  staticClass: "form-check-label",
-                                  attrs: { for: "primair" }
-                                },
-                                [_vm._v("Primaire")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.niveau_etude,
-                                    expression: "form.niveau_etude"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  type: "checkbox",
-                                  name: "niveau_etude[]",
-                                  value: "college",
-                                  id: "college"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.niveau_etude)
-                                    ? _vm._i(_vm.form.niveau_etude, "college") >
-                                      -1
-                                    : _vm.form.niveau_etude
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.niveau_etude,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "college",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
-                                      }
-                                    } else {
-                                      _vm.$set(_vm.form, "niveau_etude", $$c)
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form.niveau_etude_id,
+                                      expression: "form.niveau_etude_id"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    name: "niveau_etude_id[]",
+                                    id: "niveau_etude_id",
+                                    multiple: ""
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.form,
+                                        "niveau_etude_id",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
                                     }
                                   }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "form-check-label",
-                                  attrs: { for: "college" }
                                 },
-                                [_vm._v("Collége")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.niveau_etude,
-                                    expression: "form.niveau_etude"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  type: "checkbox",
-                                  name: "niveau_etude[]",
-                                  value: "lycee",
-                                  id: "lycee"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.niveau_etude)
-                                    ? _vm._i(_vm.form.niveau_etude, "lycee") >
-                                      -1
-                                    : _vm.form.niveau_etude
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.niveau_etude,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "lycee",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "niveau_etude",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
+                                [
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: {
+                                        value: "",
+                                        selected: "selected",
+                                        disabled: ""
                                       }
-                                    } else {
-                                      _vm.$set(_vm.form, "niveau_etude", $$c)
-                                    }
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "form-check-label",
-                                  attrs: { for: "lycee" }
-                                },
-                                [_vm._v("Lycée")]
+                                    },
+                                    [_vm._v("Niveau d'etudes")]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.getdata.niveau_etudes, function(
+                                    niveau_etude
+                                  ) {
+                                    return _c(
+                                      "option",
+                                      { domProps: { value: niveau_etude.id } },
+                                      [_vm._v(_vm._s(niveau_etude.niveau))]
+                                    )
+                                  })
+                                ],
+                                2
                               )
                             ])
                           ]),
@@ -72191,6 +72028,10 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c("label", { attrs: { for: "nom_contact" } }, [
+                                  _vm._v("Nom du Contact")
+                                ]),
+                                _vm._v(" "),
                                 _c("input", {
                                   directives: [
                                     {
@@ -72207,7 +72048,7 @@ var render = function() {
                                     )
                                   },
                                   attrs: {
-                                    placeholder: "Nom Contact",
+                                    placeholder: "Nom du Contact",
                                     type: "text",
                                     name: "nom_contact"
                                   },
@@ -72242,6 +72083,10 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c("label", { attrs: { for: "email" } }, [
+                                  _vm._v("Email")
+                                ]),
+                                _vm._v(" "),
                                 _c("input", {
                                   directives: [
                                     {
@@ -72290,6 +72135,10 @@ var render = function() {
                                   "div",
                                   { staticClass: "form-group" },
                                   [
+                                    _c("label", { attrs: { for: "tel" } }, [
+                                      _vm._v("N° Tél.")
+                                    ]),
+                                    _vm._v(" "),
                                     _c("input", {
                                       directives: [
                                         {
@@ -72306,7 +72155,7 @@ var render = function() {
                                         )
                                       },
                                       attrs: {
-                                        placeholder: "Tél.",
+                                        placeholder: "N° Tél.",
                                         type: "text",
                                         name: "tel"
                                       },
@@ -72338,6 +72187,10 @@ var render = function() {
                                   "div",
                                   { staticClass: "form-group" },
                                   [
+                                    _c("label", { attrs: { for: "fax" } }, [
+                                      _vm._v("Fax")
+                                    ]),
+                                    _vm._v(" "),
                                     _c("input", {
                                       directives: [
                                         {
@@ -72384,6 +72237,12 @@ var render = function() {
                                   "div",
                                   { staticClass: "form-group" },
                                   [
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "whatsapp" } },
+                                      [_vm._v("N° Whatsapp")]
+                                    ),
+                                    _vm._v(" "),
                                     _c("input", {
                                       directives: [
                                         {
@@ -72434,6 +72293,8 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "col-md-12" }, [
                             _c("div", { staticClass: "row" }, [
+                              _vm._m(2),
+                              _vm._v(" "),
                               _c("div", { staticClass: "col-md-6" }, [
                                 _c(
                                   "div",
@@ -72547,6 +72408,10 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c("label", { attrs: { for: "site_web" } }, [
+                                  _vm._v("Site web")
+                                ]),
+                                _vm._v(" "),
                                 _c("input", {
                                   directives: [
                                     {
@@ -72595,6 +72460,10 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c("label", { attrs: { for: "maps" } }, [
+                                  _vm._v("Maps")
+                                ]),
+                                _vm._v(" "),
                                 _c("input", {
                                   directives: [
                                     {
@@ -72666,6 +72535,10 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
+                            _c("label", { attrs: { for: "adresse" } }, [
+                              _vm._v("Adresse")
+                            ]),
+                            _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
@@ -72767,24 +72640,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("ID")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Type")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Etablissement")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Ville")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Nom Contact")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("N° Tél")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("N° Whatsapp")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Date d'ajout")]),
-      _vm._v(" "),
-      _c("th")
+    return _c("thead", { staticClass: "bg-success-gradient" }, [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Etablissement")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ville")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nom Contact")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("N° Tél")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("N° Whatsapp")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date d'ajout")]),
+        _vm._v(" "),
+        _c("th")
+      ])
     ])
   },
   function() {
@@ -72803,6 +72678,14 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("label", { attrs: { for: "mensualite" } }, [_vm._v("Mensualité")])
+    ])
   }
 ]
 render._withStripped = true
@@ -89520,6 +89403,9 @@ Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default.a, {
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]);
 var routes = [{
   path: '/home',
+  component: __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue")["default"]
+}, {
+  path: '/admin',
   component: __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue")["default"]
 }, {
   path: '/dashboard',
