@@ -23,13 +23,19 @@
 <body>
 @yield('content')
 <!--Scripts starts-->
+
+
+
 <!--plugin js-->
-<script src="{{ asset('js/plugin.js') }}"></script>
 <!--google maps-->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script>
-<script src="{{ asset('js/maps.js') }}"></script>
+<script src="{{ asset('js/plugin.js') }}"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script>
+<script src="{{ asset('js/maps.js') }}"></script> -->
 <!--Main js-->
 <script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('js/jquery.js') }}"></script>
+
+@yield('javascripts')
 <!--Scripts ends-->
 </body>
 </html>

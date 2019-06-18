@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Categorie;
 use App\Etablissement;
+use App\Ville;
+use App\Niveau_etude;
 
 class IndexController extends Controller
 {
@@ -27,14 +29,17 @@ class IndexController extends Controller
             ->get();
 
         
+        $villes = Ville::orderBy('id', 'asc')->get();
 
+        $niveaux = Niveau_etude::orderBy('id', 'asc')->get();
+        
     	// $promotions = Promotion::orderBy('created_at','ASC')
         //     ->where('started_at','<=',\Carbon\Carbon::now())
         //     ->where('finished_at','>=',\Carbon\Carbon::now())
         //     ->take(6)
         //     ->get();
 
-    	return view('index', compact('etablissements', 'lasts', 'categories'));
+    	return view('index', compact('etablissements', 'lasts', 'categories', 'villes', 'niveaux'));
         
     }
 }

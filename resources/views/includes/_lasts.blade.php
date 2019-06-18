@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2 text-center">
-                <h2 class="section-title v1">What's happening?</h2>
+                <h2 class="section-title v1">Des établissements à découvrir...</h2>
             </div>
             <div class="col-md-12">
                 <div class="swiper-container trending-place-wrap">
@@ -57,9 +57,9 @@
                                         <span class="round-bg green"><i class="{!! $last->categorie->categorie_icon !!}"></i></span>
                                         <p><a href="#">{!! $last->categorie->categorie !!}</a></p>
                                     </div>
-                                    <!-- <div class="trend-right float-right">
-                                        <div class="trend-open mar-top-5"><i class="ion-clock"></i> 2.30 pm</div>
-                                    </div> -->
+                                    <div class="trend-right float-right">
+                                        <div class="trend-open mar-top-5"><i class="ion-ios-location"></i> {!! $last->ville->ville !!}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

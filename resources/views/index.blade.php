@@ -17,68 +17,7 @@
         @include('includes._header')
         <!--Header ends-->
         <!--Hero section starts-->
-        <div class="hero v1 section-padding bg-zoom">
-            <div class="overlay op-3"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h1 class="hero__title places-tab">
-                            What's Your Plan Today ?
-                        </h1>
-                        <h1 class="hero__title events-tab">
-                            Explore great events.
-                        </h1>
-                        <p class="hero__description">
-                            All the top locations – from restaurants and clubs, to galleries, famous places and more..
-                        </p>
-                    </div>
-                    <div class="col-md-12 text-center mar-top-20">
-                        <ul class="hero__list">
-                            <li class="hero__list-item">
-                                <a class="place active-list" href="#">Places <i class="icofont-google-map" aria-hidden="true"></i></a>
-                            </li>
-                            <li class="hero__list-item">
-                                <a class="events" href="#">Events<i class="icofont-list"></i></a>
-                            </li>
-                        </ul>
-                        <form class="hero__form v1 bg-white">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-12">
-                                    <input class="hero__form-input custom-select" type="text" name="place-event" id="place-event" placeholder="What are you looking for?" />
-
-                                </div>
-                                <div class="col-lg-3 col-md-12">
-                                    <select class="hero__form-input custom-select">
-                                        <option>Select Location </option>
-                                        <option>New York</option>
-                                        <option>California</option>
-                                        <option>Washington</option>
-                                        <option>New Jersey</option>
-                                        <option>Los Angeles</option>
-                                        <option>Florida</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-3 col-md-12">
-                                    <select class="hero__form-input custom-select">
-                                        <option>Select Categories</option>
-                                        <option>Art's</option>
-                                        <option>Health</option>
-                                        <option>Hotels</option>
-                                        <option>Real Estate</option>
-                                        <option>Rentals</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                    <div class="submit_btn text-right md-left">
-                                        <button class="btn v3 text-right" type="submit"><i class="ion-search" aria-hidden="true"></i> Search</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('includes._search')
         <!--Hero section ends-->
         <!--Promo Category starts-->
         @include('includes._categories')
@@ -653,3 +592,5 @@
     @include('includes._footer')
     <!--Footer ends-->
     @endsection
+   
+    

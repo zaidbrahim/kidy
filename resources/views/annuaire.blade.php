@@ -185,7 +185,7 @@
                                                         @if($etablissement->site_web)
                                                             <a href="{{ $etablissement->site_web }}" target="_blank"><i class="fas fa-globe"></i> <p>{!! $etablissement->site_web !!}</p></a>
                                                         @else
-                                                            <i class="fas fa-globe"></i> Site web
+                                                            <i class="fas fa-globe"></i><p> Site web</p>
                                                         @endif
                                                         </li>
                                                     </ul>
@@ -194,9 +194,9 @@
                                                             <span class="round-bg green"><i class="{!! $etablissement->categorie->categorie_icon !!}"></i></span>
                                                             <p><a href="#">{!! $etablissement->categorie->categorie !!}</a></p>
                                                         </div>
-                                                        <!-- <div class="trend-right float-right">
-                                                            <div class="trend-open mar-top-5"><i class="ion-clock"></i> 2.30 pm</div>
-                                                        </div> -->
+                                                        <div class="trend-right float-right">
+                                                            <div class="trend-open mar-top-5"><i class="ion-ios-location"></i> {!! $etablissement->ville->ville !!}</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -209,7 +209,40 @@
                                     <div class="row">
                                         <div class="col-md-8 offset-md-2 col-xs-12 ">
                                             <div class="text-center">
-                                            {{ $etablissements->render()}}
+                                            @php
+                                                if(isset($_GET['perpage'])){
+                                                    $page = $_GET['page'];
+                                                }
+                                                else{
+                                                    $page = '1';
+                                                }
+
+                                                if(isset($_GET['ville'])){
+                                                    $ville = $_GET['ville'];
+                                                }
+                                                
+                                                if(isset($_GET['categorie'])){
+                                                    $categorie = $_GET['categorie'];
+                                                }
+
+                                                if(isset($_GET['search'])){
+                                                    $search = $_GET['search'];
+                                                }
+
+                                            @endphp
+                                            
+                                            @if(isset($search) || isset($ville) || isset($categorie))
+                                                @php
+                                                    $url = url('search?&search='.$search.'&ville='.$ville.'&categorie='.$categorie);
+                                                @endphp
+                                                    {{$etablissements->withPath($url)}}
+                                                @else
+                                                    {{ $etablissements->render()}}
+
+                                            @endif
+
+                                            
+                                            <!-- {{ $etablissements->render()}} -->
                                             </div>
                                         </div>
                                     </div>

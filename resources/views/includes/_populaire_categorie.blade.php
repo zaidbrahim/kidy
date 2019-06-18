@@ -6,14 +6,14 @@
             </div>
             @foreach($categories as $categorie)
             <div class="col-md-3">
-                <a href="grid-fullwidth.html">
+                <a href="{{ route('annuaire',['categorie'=>$categorie->slug]) }}">
                     <div class="popular-catagory-content">
                         <div class="popular-catagory-img">
                             <img src="img/categories/{!! $categorie->categorie_image !!}" alt="hotel" class="img_fluid">
                         </div>
                         <div class="cat-content">
                             <h6 class="title">{!! $categorie->categorie !!}</h6>
-                            <span>{{ $categorie->etablissements->count() }}</span>
+                            <span>{!! $categorie->etablissements->count() !!}</span>
                         </div>
                     </div>
                 </a>
