@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <h1 class="hero__title places-tab">
-                    Annuaire des Écoles Privées au Maroc
+                    Annuaire des Écoles Privées
                 </h1>
                 <h1 class="hero__title events-tab">
                     Explore great events.
@@ -28,34 +28,36 @@
                         <div class="col-lg-12 col-md-12">
                             <input class="hero__form-input custom-select" type="text" name="search" id="search" placeholder="Que cherchez vous ?" />
                         </div>
+                    </div>
+                    <br>
+                    <div class="row">
                         <div class="col-lg-4 col-md-12">
-                            <select class="form-control form-control-sm custom-select" name="categorie">
+                            <select class="hero__form-input custom-select dynamic" name="ville" id="ville">
+                                <option value="">Ville</option>
+                                @foreach($villes as $ville)
+                                    <option value="{{ $ville->id }}">{!! $ville->ville !!}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <select class="hero__form-input custom-select" name="zone" id="zone">
+                                <option value="">Zone</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <select class="hero__form-input custom-select" name="categorie">
                                 <option value="">Type d'établissement</option>
                                 @foreach($categories as $categorie)
                                     <option value="{{ $categorie->id }}">{!! $categorie->categorie !!}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-lg-4 col-md-12">
-                            <select class="form-control form-control-sm custom-select form-control form-control-sm" name="ville" id="ville">
-                                <option value="">Ville</option>
-                                @foreach($countries as $key => $value)
-                                    <option value="{{ $key }}">{!! $value !!}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-lg-4 col-md-12">
-                            <select class="form-control form-control-sm custom-select" name="zone" id="zone">
-                                <option value="">Zone</option>
-                            </select>
-                        </div>
-                        
                     </div>
                     <br>
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
+                    <div class="row justify-content-end">
+                        <div class="col-2">
                         <div class="submit_btn">
-                                <button class="btn v3" type="submit"><i class="ion-search" aria-hidden="true"></i> Chercher</button>
+                                <button class="btn v3 text-right" type="submit"><i class="ion-search" aria-hidden="true"></i> Chercher</button>
                             </div>
                         </div>
                     </div>
@@ -68,31 +70,22 @@
     <script>
         $(document).ready(function(){
             $('select[name="ville"]').on('change', function(){
-                var villeID = $(this).val();
-                if(villeID){  
+                var ville_id = $(this).val();
+                if(ville_id){  
                     $.ajax({
-                        url: '/getZones/'+villeID,
+                        url: '/getZones/'+ville_id,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data){
-                            if(data){
-                                $('select[name="zone"]').empty();
-                                $.each(data, function(key, value){
-                                    //console.log(value);
-                                    $('select[name="zone"]').append('<option value="'+key+'">'+ value +'</option>');
-                                });
-                            }
-                            else
-                            {
-                                console.log("Nothing to show");
-                                $('select[name="zone"]').empty();
-
-                            }
+                            $('select[name="zone"]').empty();
+                            $.each(data, function(value){
+                                // console.log(value.zone);
+                                $('select[name="zone"]').append('<option value="'+value.id+'">'+ value.zone +'</option>');
+                            });
                         }
                     });
                 }
                 else{
-                    console.log("makayen walou");
                     $('select[name="zone"]').empty();
                 }
             });

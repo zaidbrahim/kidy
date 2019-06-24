@@ -1,5 +1,5 @@
 <div class="footer-wrapper no-pad-tb footer-fixed">
-        <div class="footer-top-area section-padding" style="background-image: url(images/bg/pattern.png)">
+        <div class="footer-top-area section-padding">
             <div class="overlay op-9 green"></div>
             <div class="container">
                 <div class="row nav-folderized">
@@ -26,12 +26,11 @@
                     </div>
                     <div class="col-lg-3 col-md-12">
                         <div class="footer-content nav">
-                            <h2 class="title">Category</h2>
+                            <h2 class="title">Catégories</h2>
                             <ul class="list">
-                                <li><a class="link-hov style1" href="#">Shop</a></li>
-                                <li><a class="link-hov style1" href="#">Travel</a></li>
-                                <li><a class="link-hov style1" href="#">Sport</a></li>
-                                <li><a class="link-hov style1" href="#">Restaurant</a></li>
+                            @foreach($categories as $categorie)
+                                <li><a class="link-hov style1" href="#">{!! $categorie->categorie !!}</a></li>
+                            @endforeach
                             </ul>
                         </div>
                     </div>

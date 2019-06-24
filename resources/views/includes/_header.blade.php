@@ -13,13 +13,12 @@
                                 <ul class="site-menu js-clone-nav d-none d-lg-block">
                                     <li class="has-children">
                                         <a href="{{ route('index') }}">Home</a>
-                                        
                                     </li>
                                     <li class="has-children">
-                                        <a href="#">Annuaire</a>
+                                        <a href="{{ route('annuaire.index')}}">Annuaire</a>
                                         <ul class="dropdown">
                                             @foreach($categories as $categorie)
-                                                <li><a href="{{ route('annuaire',['categorie'=>$categorie->slug]) }}">{!! $categorie->categorie !!}</a></li>
+                                                <li><a href="{{ route('annuaire.categorie',['categorie'=>$categorie->slug]) }}">{!! $categorie->categorie !!}</a></li>
                                             @endforeach
                                         </ul>
                                     </li>

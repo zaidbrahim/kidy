@@ -16,6 +16,9 @@ class CreateVillesTable extends Migration
         Schema::create('villes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ville')->unique();
+            $table->string('image')->default('city.jpg');
+            $table->boolean('etat')->default('1');
+            $table->boolean('favorie')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

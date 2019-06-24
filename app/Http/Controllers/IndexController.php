@@ -7,19 +7,26 @@ use Illuminate\Http\Request;
 use App\Categorie;
 use App\Etablissement;
 use App\Ville;
+use App\Zone;
 use App\Niveau_etude;
 
 class IndexController extends Controller
 {
-    public function home()
-    {
+
+    /**
+     * Get Ajax Request and restun Data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
+    public function home(){
         
         $etablissements = Etablissement::where('etat', '=', 1)
            //->where('photo' ,'!=', 'default.png')
             ->orderByRaw('RAND()')
             ->get();
 
-        $categories = Categorie::orderBy('id', 'ASC')
+        $categories = Categorie::orderBy('categorie', 'ASC')
                     ->withCount('etablissements')            
                     ->get();
 
@@ -29,17 +36,27 @@ class IndexController extends Controller
             ->get();
 
         
-        $villes = Ville::orderBy('id', 'asc')->get();
-
+        $villes = Ville::where('etat', 1)
+            ->where('favorie', 1)
+            ->orderBy('id', 'asc')
+            ->get();
+            
+        $countries = Ville::pluck("ville", "id")
+                    ->all(); 
+    
         $niveaux = Niveau_etude::orderBy('id', 'asc')->get();
-        
-    	// $promotions = Promotion::orderBy('created_at','ASC')
-        //     ->where('started_at','<=',\Carbon\Carbon::now())
-        //     ->where('finished_at','>=',\Carbon\Carbon::now())
-        //     ->take(6)
-        //     ->get();
 
-    	return view('index', compact('etablissements', 'lasts', 'categories', 'villes', 'niveaux'));
+    	return view('index', compact('etablissements', 'categories', 'villes', 'lasts', 'countries', 'niveaux'));
         
     }
+
+    public function getZones($id){
+        
+        $zones = Zone::where("ville_id", $id)
+                    ->pluck("zone", "id")
+                    ->all();
+
+        return json_encode($zones);
+    }
+
 }

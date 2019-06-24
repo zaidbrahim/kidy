@@ -13,19 +13,72 @@ use App\Zone;
 
 class AnnuaireController extends Controller
 {
-    public function index($categorie = null){
+    public function index(){
+
+        $etablissements = Etablissement::orderByRaw('RAND()')
+                ->with('categorie')
+                ->with('ville')    
+                ->paginate(12);
+        
+        $categories     = Categorie::orderBy('categorie', 'asc')->get();
+        $villes         = Ville::where('etat', 1)
+                                ->orderBy('ville', 'desc')->get();
+
+        return view('annuaire', compact('etablissements', 'categories', 'villes', 'countries'));
+
+    }
+
+    public function getZones($id){
+
+        $zones = Zone::where('ville_id', $id)->pluck('zone', 'id')->all();
+        // return json_encode($zones);
+        return response()->json($zones);
+    }
+
+
+
+    
+
+
+    public function getCategories($categorie = null){
 
         if($categorie){
 
+
             $cat_id = Categorie::where('slug',$categorie)->value('id');
 
-            // select * from etablissements where categorie_id in( SELECT id from categories where slug = 'ecoles')
-
-            $etablissements = Etablissement::where('etat', '=', 1)
+            $etablissements = Etablissement::where('etat', 1)
                 ->whereIn('categorie_id', function($query) use ($cat_id){
                     $query->select('id')
                           ->from('categories')
-                          ->where('id', '=', $cat_id);
+                          ->where('id', $cat_id);
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->paginate(12);
+        }
+        else{
+            $etablissements = Etablissement::orderByRaw('RAND()')
+                ->with('categorie')
+                ->with('ville')    
+                ->paginate(12);
+        } 
+
+        $categories     = Categorie::orderBy('categorie', 'asc')->get();
+        $villes         = Ville::where('etat', 1)
+                                ->orderBy('ville', 'desc')->get();
+
+        return view('annuaire', compact('etablissements', 'categories', 'villes'));
+    }
+
+    public function getVilles($ville = null){
+
+        if ($ville){
+
+            $etablissements = Etablissement::where('etat', 1)
+                ->whereIn('ville_id', function($query) use ($ville){
+                    $query->select('id')
+                          ->from('villes')
+                          ->where('id', '=', $ville);
                     })
                     ->orderBy('created_at', 'DESC')
                     ->paginate(12);
@@ -38,8 +91,9 @@ class AnnuaireController extends Controller
                 ->paginate(12);
         } 
 
-        $categories     = Categorie::orderBy('id', 'asc')->get();
-        $villes         = Ville::orderBy('id', 'desc')->get();
+        $categories     = Categorie::orderBy('categorie', 'asc')->get();
+        $villes         = Ville::where('etat', 1)
+                                ->orderBy('ville', 'desc')->get();
 
         return view('annuaire', compact('etablissements', 'categories', 'villes'));
 
@@ -67,33 +121,27 @@ class AnnuaireController extends Controller
 
     // }
 
-    public function getZones($id){
-
-        $zones = Zone::where('ville_id', $id)->get();
-
-        return json_encode($zones);
-    }
+   
 
     public function search(Request $request){
-        
-        $search     = $request->search;
-        $ville      = $request->ville;
-        $categorie  = $request->categorie;
-        $niveau     = $request->niveau;
 
         $data = $request->all();
 
         $etablissements =  Etablissement::select('*')
-        ->when(!empty($data['search']) , function ($query) use($data){
-        return $query->where('etablissement','like', '%'.$data['search'].'%');
-        })
-        ->when (!empty($data['ville']) , function ($query) use($data){
-        return $query->where('ville_id',$data['ville']);
-        })
-        ->when (!empty($data['categorie']) , function ($query) use($data){
-            return $query->where('categorie_id',$data['categorie']);
+            ->when(!empty($data['search']) , function ($query) use($data){
+                return $query->where('etablissement','like', '%'.$data['search'].'%');
             })
-        ->paginate(12);
+            ->when(!empty($data['ville']) || empty($data['zone']), function ($query) use($data){
+                return $query->where('ville_id',$data['ville']);
+            })
+            ->when(!empty($data['categorie']) , function ($query) use($data){
+                return $query->where('categorie_id',$data['categorie']);
+            })
+            ->when(!empty($data['zone']) , function ($query) use($data){
+                return $query->where('zone_id',$data['zone']);
+            })
+
+            ->paginate(12);
                        
         // $requete = "App\Etablissement::where('etat', 1)";
 
