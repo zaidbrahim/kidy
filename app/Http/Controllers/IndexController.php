@@ -53,6 +53,7 @@ class IndexController extends Controller
     public function getZones($id){
         
         $zones = Zone::where("ville_id", $id)
+                    ->orderBy('zone', 'ASC')
                     ->pluck("zone", "id")
                     ->all();
 

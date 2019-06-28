@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-lg-8 col-sm-8 col-12">
                                 <div class="item-element res-box  text-right xs-left">
-                                    <p>Total <span>{{ $etablissements->count() }}</span> Listings</p>
+                                    <p>Total <span></span> Listings</p>
                                 </div>
                             </div>
                         </div>
@@ -240,7 +240,6 @@
                                                     {{ $etablissements->render()}}
 
                                             @endif
-
                                             
                                             <!-- {{ $etablissements->render()}} -->
                                             </div>
@@ -252,7 +251,7 @@
                         </div>
                     </div>
                     <div class="explore__map-side">
-                        <div id="map_right_listing"></div>
+                        @include('includes._maps')
                     </div>
                 </div>
             </div>
@@ -262,4 +261,8 @@
         <span class="scrolltotop"><i class="ion-arrow-up-c"></i></span>
         <!-- Scroll to top ends-->
     </div>
+@endsection
+
+@section('maps_js')
+    {!! $map['js'] !!}
 @endsection

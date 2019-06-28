@@ -49,12 +49,9 @@
                                 <option value="">Zone</option>
                             </select>
                         </div>
-                        
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                        <div class="submit_btn">
+
+                        <div class="col-lg-12 text-right mt-100">
+                            <div class="submit_btn">
                                 <button class="btn v3" type="submit"><i class="ion-search" aria-hidden="true"></i> Chercher</button>
                             </div>
                         </div>
@@ -77,6 +74,7 @@
                         success: function(data){
                             if(data){
                                 $('select[name="zone"]').empty();
+                                $('select[name="zone"]').append('<option value="">Toutes les zones</option>');
                                 $.each(data, function(key, value){
                                     //console.log(value);
                                     $('select[name="zone"]').append('<option value="'+key+'">'+ value +'</option>');
@@ -84,7 +82,6 @@
                             }
                             else
                             {
-                                console.log("Nothing to show");
                                 $('select[name="zone"]').empty();
 
                             }

@@ -18,6 +18,7 @@ Route::get('invoice', function(){
 
 Auth::routes();
 
+
 //Route::get('getData', array('as'=>'myform', 'uses'=>'IndexController@getData'));
 Route::get('getZones/{id}', array('as'=>'getZones', 'uses'=>'IndexController@getZones'));
 
@@ -26,6 +27,8 @@ Route::get('getZones/{id}', array('as'=>'getZones', 'uses'=>'IndexController@get
 Route::get('/', 'IndexController@home')->name('index');
 Route::get('/admin', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/maps','MapController@index');
 
 
 Route::get('/annuaire','AnnuaireController@index')->name('annuaire.index');

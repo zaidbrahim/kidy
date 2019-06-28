@@ -3509,6 +3509,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3526,6 +3544,8 @@ __webpack_require__.r(__webpack_exports__);
         adresse: '',
         zone_id: '',
         ville_id: '',
+        latitude: '',
+        longitude: '',
         photo: '',
         tel: '',
         fax: '',
@@ -3572,7 +3592,7 @@ __webpack_require__.r(__webpack_exports__);
       var photo = this.form.photo.length > 400 ? this.form.photo : "img/etablissement/" + this.form.photo;
       return photo;
     },
-    getPoto: function getPoto(e) {
+    getPhoto: function getPhoto(e) {
       var _this3 = this;
 
       var file = e.target.files[0];
@@ -3761,6 +3781,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3768,7 +3804,9 @@ __webpack_require__.r(__webpack_exports__);
       villes: {},
       form: new Form({
         id: '',
-        ville: ''
+        ville: '',
+        latitude: '',
+        longitude: ''
       })
     };
   },
@@ -71643,7 +71681,7 @@ var render = function() {
                 [
                   _c("div", { staticClass: "modal-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-7" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
                         _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-md-12" }, [
                             _c(
@@ -72130,7 +72168,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "col-md-12" }, [
                             _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col-md-4" }, [
+                              _c("div", { staticClass: "col-md-12" }, [
                                 _c(
                                   "div",
                                   { staticClass: "form-group" },
@@ -72182,7 +72220,7 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "col-md-4" }, [
+                              _c("div", { staticClass: "col-md-12" }, [
                                 _c(
                                   "div",
                                   { staticClass: "form-group" },
@@ -72232,7 +72270,7 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "col-md-4" }, [
+                              _c("div", { staticClass: "col-md-12" }, [
                                 _c(
                                   "div",
                                   { staticClass: "form-group" },
@@ -72289,8 +72327,12 @@ var render = function() {
                                 )
                               ])
                             ])
-                          ]),
-                          _vm._v(" "),
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-md-12" }, [
                             _c("div", { staticClass: "row" }, [
                               _vm._m(2),
@@ -72460,6 +72502,56 @@ var render = function() {
                               "div",
                               { staticClass: "form-group" },
                               [
+                                _c("label", { attrs: { for: "adresse" } }, [
+                                  _vm._v("Adresse")
+                                ]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form.adresse,
+                                      expression: "form.adresse"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.form.errors.has("adresse")
+                                  },
+                                  attrs: {
+                                    placeholder: "Adresse",
+                                    type: "text",
+                                    name: "adresse"
+                                  },
+                                  domProps: { value: _vm.form.adresse },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.form,
+                                        "adresse",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("has-error", {
+                                  attrs: { form: _vm.form, field: "adresse" }
+                                })
+                              ],
+                              1
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-12" }, [
+                            _c(
+                              "div",
+                              { staticClass: "form-group" },
+                              [
                                 _c("label", { attrs: { for: "maps" } }, [
                                   _vm._v("Maps")
                                 ]),
@@ -72503,81 +72595,136 @@ var render = function() {
                               ],
                               1
                             )
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-5" }, [
-                        _c("div", { staticClass: "text-center" }, [
-                          _c("img", {
-                            staticClass: "img-fluid",
-                            attrs: { src: _vm.getPhotoEtablissement(), alt: "" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
+                          ]),
+                          _vm._v(" "),
                           _c("div", { staticClass: "col-md-12" }, [
-                            _c("input", {
-                              staticClass: "form-control-file",
-                              attrs: { type: "file", id: "inputPhoto" },
-                              on: { change: _vm.getPoto }
-                            })
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-12" }, [
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c("label", { attrs: { for: "adresse" } }, [
-                              _vm._v("Adresse")
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col-md-6" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "form-group" },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form.latitude,
+                                          expression: "form.latitude"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      class: {
+                                        "is-invalid": _vm.form.errors.has(
+                                          "latitude"
+                                        )
+                                      },
+                                      attrs: {
+                                        placeholder: "Latitude",
+                                        type: "text",
+                                        name: "latitude"
+                                      },
+                                      domProps: { value: _vm.form.latitude },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.form,
+                                            "latitude",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("has-error", {
+                                      attrs: {
+                                        form: _vm.form,
+                                        field: "latitude"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-6" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "form-group" },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.form.longitude,
+                                          expression: "form.longitude"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      class: {
+                                        "is-invalid": _vm.form.errors.has(
+                                          "longitude"
+                                        )
+                                      },
+                                      attrs: {
+                                        placeholder: "Longitude",
+                                        type: "text",
+                                        name: "longitude"
+                                      },
+                                      domProps: { value: _vm.form.longitude },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.form,
+                                            "longitude",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("has-error", {
+                                      attrs: {
+                                        form: _vm.form,
+                                        field: "longitude"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-12" }, [
+                            _c("div", { staticClass: "text-center mb-1" }, [
+                              _c("img", {
+                                staticClass: "img-fluid",
+                                attrs: {
+                                  src: _vm.getPhotoEtablissement(),
+                                  alt: ""
+                                }
+                              })
                             ]),
                             _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.adresse,
-                                  expression: "form.adresse"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.form.errors.has("adresse")
-                              },
-                              attrs: {
-                                placeholder: "Adresse",
-                                type: "text",
-                                name: "adresse"
-                              },
-                              domProps: { value: _vm.form.adresse },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "adresse",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("has-error", {
-                              attrs: { form: _vm.form, field: "adresse" }
-                            })
-                          ],
-                          1
-                        )
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("div", { staticClass: "col-md-12 mt-4" }, [
+                                _c("input", {
+                                  staticClass: "form-control-file",
+                                  attrs: { type: "file", id: "inputPhoto" },
+                                  on: { change: _vm.getPhoto }
+                                })
+                              ])
+                            ])
+                          ])
+                        ])
                       ])
                     ])
                   ]),
@@ -72880,43 +73027,145 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-body" }, [
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.ville,
-                              expression: "form.ville"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.form.errors.has("ville") },
-                          attrs: {
-                            placeholder: "Ville",
-                            type: "text",
-                            name: "ville"
-                          },
-                          domProps: { value: _vm.form.ville },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.ville,
+                                  expression: "form.ville"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has("ville")
+                              },
+                              attrs: {
+                                placeholder: "Ville",
+                                type: "text",
+                                name: "ville"
+                              },
+                              domProps: { value: _vm.form.ville },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "ville",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                              _vm.$set(_vm.form, "ville", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "ville" }
-                        })
-                      ],
-                      1
-                    )
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.form, field: "ville" }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.latitude,
+                                  expression: "form.latitude"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has("latitude")
+                              },
+                              attrs: {
+                                placeholder: "Latitude",
+                                type: "text",
+                                name: "latitude"
+                              },
+                              domProps: { value: _vm.form.latitude },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "latitude",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.form, field: "latitude" }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.longitude,
+                                  expression: "form.longitude"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has("longitude")
+                              },
+                              attrs: {
+                                placeholder: "Longitude",
+                                type: "text",
+                                name: "longitude"
+                              },
+                              domProps: { value: _vm.form.longitude },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "longitude",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.form, field: "longitude" }
+                            })
+                          ],
+                          1
+                        )
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [

@@ -65,6 +65,8 @@ class EtablissementController extends Controller
             'etablissement'=> 'required|min:3|max:255',
             'nom_contact'=> 'required|min:3',
             'tel'=> 'numeric',
+            'latitude'=> 'numeric',
+            'longitude'=> 'numeric',
             //'fax'=> 'numeric',
             //'whatsapp'=> 'numeric',
         ]);
@@ -97,7 +99,7 @@ class EtablissementController extends Controller
         //     'whatsapp' => $request['whatsapp'],
         //     'maps' => $request['maps'],
         //     'site_web' => $request['site_web'],
-        //     'photo' => $name,
+        //     'photo' => $name
         //     'mensualite_min' => $request['mensualite_min'],
         //     'mensualite_max' => $request['mensualite_max'],
         //     //'niveau_etude' => $checkbox,
@@ -107,22 +109,24 @@ class EtablissementController extends Controller
 
         $etablissement = new Etablissement();
 
-            $etablissement->categorie_id    = $request->categorie_id;
-            $etablissement->user_id         = auth('api')->user()->id;
-            $etablissement->etablissement   = $request->etablissement;
-            $etablissement->nom_contact     = $request->nom_contact;
-            $etablissement->email           = $request->email;
-            $etablissement->adresse         = $request->adresse;
-            $etablissement->zone_id         = $request->zone_id;
-            $etablissement->ville_id        = $request->ville_id;
-            $etablissement->tel             = $request->tel;
-            $etablissement->fax             = $request->fax;
-            $etablissement->whatsapp        = $request->whatsapp;
-            $etablissement->maps            = $request->maps;
-            $etablissement->site_web        = $request->site_web;
-            $etablissement->photo           = $name;
-            $etablissement->mensualite_min  = $request->mensualite_min;
-            $etablissement->mensualite_max  = $request->mensualite_max;
+            $etablissement->categorie_id            = $request->categorie_id;
+            $etablissement->user_id                 = auth('api')->user()->id;
+            $etablissement->etablissement           = $request->etablissement;
+            $etablissement->nom_contact             = $request->nom_contact;
+            $etablissement->email                   = $request->email;
+            $etablissement->adresse                 = $request->adresse;
+            $etablissement->zone_id                 = $request->zone_id;
+            $etablissement->ville_id                = $request->ville_id;
+            $etablissement->latitude                = $request->latitude;
+            $etablissement->longitude               = $request->longitude;
+            $etablissement->tel                     = $request->tel;
+            $etablissement->fax                     = $request->fax;
+            $etablissement->whatsapp                = $request->whatsapp;
+            $etablissement->maps                    = $request->maps;
+            $etablissement->site_web                = $request->site_web;
+            $etablissement->photo                   = $name;
+            $etablissement->mensualite_min          = $request->mensualite_min;
+            $etablissement->mensualite_max          = $request->mensualite_max;
 
         $etablissement->save();
 
@@ -179,23 +183,28 @@ class EtablissementController extends Controller
             //'fax'=> 'numeric',
             //'whatsapp'=> 'numeric',
 
+            'latitude'=> 'numeric',
+            'longitude'=> 'numeric',
+
         ]);
 
         // $etablissement->update($request->all());
 
-            $etablissement->categorie_id    = $request->categorie_id;
-            $etablissement->user_id         = auth('api')->user()->id;
-            $etablissement->etablissement   = $request->etablissement;
-            $etablissement->nom_contact     = $request->nom_contact;
-            $etablissement->email           = $request->email;
-            $etablissement->adresse         = $request->adresse;
-            $etablissement->zone_id         = $request->zone_id;
-            $etablissement->ville_id        = $request->ville_id;
-            $etablissement->tel             = $request->tel;
-            $etablissement->fax             = $request->fax;
-            $etablissement->whatsapp        = $request->whatsapp;
-            $etablissement->maps            = $request->maps;
-            $etablissement->site_web        = $request->site_web;
+            $etablissement->categorie_id            = $request->categorie_id;
+            $etablissement->user_id                 = auth('api')->user()->id;
+            $etablissement->etablissement           = $request->etablissement;
+            $etablissement->nom_contact             = $request->nom_contact;
+            $etablissement->email                   = $request->email;
+            $etablissement->adresse                 = $request->adresse;
+            $etablissement->zone_id                 = $request->zone_id;
+            $etablissement->ville_id                = $request->ville_id;
+            $etablissement->latitude                = $request->latitude;
+            $etablissement->longitude               = $request->longitude;
+            $etablissement->tel                     = $request->tel;
+            $etablissement->fax                     = $request->fax;
+            $etablissement->whatsapp                = $request->whatsapp;
+            $etablissement->maps                    = $request->maps;
+            $etablissement->site_web                = $request->site_web;
 
             if($request->photo != $currentPhoto){
                 $etablissement->photo       = $name;
@@ -254,28 +263,29 @@ class EtablissementController extends Controller
 
         if ($search = \Request::get('q')){
             $etablissements = Etablissement::where(function($query) use ($search){
-                $query->where('etablissement', 'LIKE', "%$search%")
-                      ->orWhere('nom_contact', 'LIKE', "%$search%")
-                      ->orWhere('tel', 'LIKE', "%$search%")
-                      ->orWhere('whatsapp', 'LIKE', "%$search%")
+                $query->where('etablissement', 'LIKE', "'%$search%'")
+                      ->orWhere('nom_contact', 'LIKE', "'%$search%'")
+                      ->orWhere('tel', 'LIKE', "'%$search%'")
+                      ->orWhere('whatsapp', 'LIKE', "'%$search%'")
                       ->orwhereIn('ville_id', function($query) use ($search){
                         $query->select('id')
                               ->from('villes')
-                              ->where('ville', '=', $search);
+                              ->where('ville', 'like', "'%$search%'");
                         });
             })
-            ->with('categorie')
-            ->with('zone')
-            ->with('ville')
+
             ->paginate(10);
+
         }
         else{
+
             $etablissements = Etablissement::latest()
                 ->with('zone')
                 ->with('ville')
                 ->with('categorie')
                 ->paginate(10);
         }
+
 
         $villes = Ville::orderBy('ville','DESC')->get();
         $zones = Zone::orderBy('zone','DESC')->get();

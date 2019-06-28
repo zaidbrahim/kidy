@@ -4,46 +4,95 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use FarhanWazir\GoogleMaps\GMaps;
 
 use App\Etablissement;
 use App\Categorie;
 use App\Ville;
 use App\Zone;
+use App\Gmaps_geocach;
 
+class AnnuaireController extends Controller{
 
-class AnnuaireController extends Controller
-{
+    protected $gmap;
+
+    public function __construct(GMaps $gmap){
+
+        $this->gmap = $gmap;
+
+    }
+
     public function index(){
 
-        $etablissements = Etablissement::orderByRaw('RAND()')
-                ->with('categorie')
-                ->with('ville')    
-                ->paginate(12);
-        
-        $categories     = Categorie::orderBy('categorie', 'asc')->get();
-        $villes         = Ville::where('etat', 1)
-                                ->orderBy('ville', 'desc')->get();
+        $positions = Etablissement::where('latitude','!=', '')
+                                  ->where('longitude','!=', '')
+                                  ->get();
 
-        return view('annuaire', compact('etablissements', 'categories', 'villes', 'countries'));
+        $config = array();
+
+        $config['center']           = '33.565486, -7.626999';
+        $config['geocodeCaching']   = true;
+        $config['map_height']       = "100%";
+        $config['zoom']             = "13";
+
+        $this->gmap->initialize($config);
+
+
+        $marker = array();
+        $marker['draggable'] = true;
+        $marker['ondragend'] = '
+        iw_'. $this->gmap->map_name .'.close();
+        reverseGeocode(event.latLng, function(status, result, mark){
+            if(status == 200){
+                iw_'. $this->gmap->map_name .'.setContent(result);
+                iw_'. $this->gmap->map_name .'.open('. $this->gmap->map_name .', mark);
+            }
+        }, this);
+        ';
+
+        foreach($positions as $position){
+
+            $marker['position']             = ''.$position->latitude.', '.$position->longitude.'';
+            $marker['infowindow_content']   = ''.$position->etablissement.'';
+            
+            $this->gmap->add_marker($marker);
+            
+        }
+
+        $map = $this->gmap->create_map();
+
+        $etablissements  = Etablissement::orderByRaw('RAND()')
+            ->with('categorie')
+            ->with('ville')
+            ->paginate(12);
+
+        $categories      = Categorie::orderBy('categorie', 'asc')->get();
+
+        $villes          = Ville::where('etat', 1)
+            ->orderBy('ville', 'desc')->get();
+
+
+        return view('annuaire', [
+
+            'categories'        => $categories,
+            'villes'            => $villes,
+            'etablissements'    => $etablissements,
+            'map'               => $map,
+
+        ]);
 
     }
 
     public function getZones($id){
 
         $zones = Zone::where('ville_id', $id)->pluck('zone', 'id')->all();
-        // return json_encode($zones);
         return response()->json($zones);
+        
     }
-
-
-
-    
-
 
     public function getCategories($categorie = null){
 
         if($categorie){
-
 
             $cat_id = Categorie::where('slug',$categorie)->value('id');
 
@@ -66,7 +115,7 @@ class AnnuaireController extends Controller
         $categories     = Categorie::orderBy('categorie', 'asc')->get();
         $villes         = Ville::where('etat', 1)
                                 ->orderBy('ville', 'desc')->get();
-
+        
         return view('annuaire', compact('etablissements', 'categories', 'villes'));
     }
 
@@ -99,33 +148,66 @@ class AnnuaireController extends Controller
 
     }
 
-    // public function getZone(Request $request){
-        
-    //     $select = $request->get('select');
-    //     $value = $request->get('value');
-    //     $dependent = $request->get('dependent');
-
-
-    //     $zones = Zone::where('ville_id', $value)
-    //                 ->orderBy('zone', 'ASC')
-    //                 ->get();
-
-                    
-    //     $output = '<option value="">'.ucfirst($dependent).'</option>';
-    //     foreach($zones as $zone)
-    //     {
-    //         $output .= '<option value="'.$zone->id.'">'.$zone->zone.'</option>';
-    //     }
-
-    //     echo $output;
-
-    // }
-
-   
 
     public function search(Request $request){
 
         $data = $request->all();
+
+        $positions = Etablissement::select('*')
+            ->when(!empty($data['search']) , function ($query) use($data){
+                return $query->where('etablissement','like', '%'.$data['search'].'%');
+            })
+            ->when(!empty($data['ville']) || empty($data['zone']), function ($query) use($data){
+                return $query->where('ville_id',$data['ville']);
+            })
+            ->when(!empty($data['categorie']) , function ($query) use($data){
+                return $query->where('categorie_id',$data['categorie']);
+            })
+            ->when(!empty($data['zone']) , function ($query) use($data){
+                return $query->where('zone_id',$data['zone']);
+            })
+            ->where('latitude','!=', '')
+            ->where('longitude','!=', '')
+            ->get();
+
+        $config = array();
+
+        $latitude   = Ville::where('id', $data['ville'])->value('latitude');
+        $longitude  = Ville::where('id', $data['ville'])->value('longitude');
+
+
+
+        $config['center']           = ''.$latitude.', '.$longitude.'';
+        $config['geocodeCaching']   = true;
+        $config['map_height']       = "100%";
+        $config['zoom']             = "10";
+
+        $this->gmap->initialize($config);
+
+        $marker = array();
+        $marker['draggable'] = true;
+        $marker['ondragend'] = '
+        iw_'. $this->gmap->map_name .'.close();
+        reverseGeocode(event.latLng, function(status, result, mark){
+            if(status == 200){
+                iw_'. $this->gmap->map_name .'.setContent(result);
+                iw_'. $this->gmap->map_name .'.open('. $this->gmap->map_name .', mark);
+            }
+        }, this);
+        ';
+
+        foreach($positions as $position){
+
+            $marker['position']             = ''.$position->latitude.', '.$position->longitude.'';
+            $marker['infowindow_content']   = ''.$position->etablissement.'';
+
+            $this->gmap->add_marker($marker);
+
+        }
+
+        $map = $this->gmap->create_map();
+
+
 
         $etablissements =  Etablissement::select('*')
             ->when(!empty($data['search']) , function ($query) use($data){
@@ -142,38 +224,11 @@ class AnnuaireController extends Controller
             })
 
             ->paginate(12);
-                       
-        // $requete = "App\Etablissement::where('etat', 1)";
-
-        // if($search){
-        //     $requete .= "->where('etablissement','like','%'.$search.'%')";
-        // }
-
-        // if($ville){
-        //     $requete .= "->where('ville_id', $ville)";
-        // }
-
-        // if($categorie){
-        //     $requete .= "->where('categorie_id', $categorie)";
-        // }
-
-        // $requete .= "->orderBy('id', 'desc')";
-
-        // $requete .= "->paginate(12)";
-
-        // $etablissements = Etablissement::where('etat', '=', 1)
-        //     ->where(function ($query) use ($search, $ville, $categorie, $requete){
-        //          $query->$requete
-        //          ->orderBy('id','desc');
-        //     })
-        //     ->paginate(12);
-        
-        //eval("\$etablissements=$requete;");
 
 
         $categories     = Categorie::orderBy('id', 'asc')->get();
         $villes         = Ville::orderBy('id', 'desc')->get();
 
-        return view('annuaire', compact('etablissements', 'categories', 'villes'));
+        return view('annuaire', compact('etablissements', 'categories', 'villes', 'map'));
     }
 }

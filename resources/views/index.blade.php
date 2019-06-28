@@ -15,8 +15,8 @@
     <div class="page-wrapper fixed-footer">
         <!--header starts-->
         @include('includes._header')
-
         <!--Header ends-->
+
         <!--Hero section starts-->
             @include('includes._search')
         <!--Hero section ends-->
@@ -36,7 +36,6 @@
         <!--Trending events starts-->
             @include('includes._lasts')        
         <!--Trending events ends-->
-        
 
         <!--mobile app start-->
         <div class="app-section section-padding pad-top-70" style="background-image: url(images/bg/bg2.png)">

@@ -11,7 +11,8 @@ class Etablissement extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'categorie_id', 'user_id', 'etablissement', 'description', 'email', 'adresse', 'zone_id', 'ville_id', 'maps', 'mensualite_min', 'mensualite_max', 'niveau_etude', 'tel', 'fax', 'whatsapp', 'site_web', 'photo', 'nom_contact', 'type'
+        
+        'categorie_id', 'user_id', 'etablissement', 'description', 'email', 'adresse', 'zone_id', 'gmaps_geocache_id', 'ville_id', 'maps', 'mensualite_min', 'mensualite_max', 'niveau_etude', 'tel', 'fax', 'whatsapp', 'site_web', 'photo', 'nom_contact', 'type'
         
     ];
 

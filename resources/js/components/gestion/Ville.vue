@@ -66,9 +66,25 @@
                     </div>
                     <form @submit.prevent="editmode ? updateVille() : createVille()">
                         <div class="modal-body">
-                            <div class="form-group">
-                                <input v-model="form.ville" placeholder="Ville" type="text" name="ville" class="form-control" :class="{ 'is-invalid': form.errors.has('ville') }">
-                                <has-error :form="form" field="ville"></has-error>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input v-model="form.ville" placeholder="Ville" type="text" name="ville" class="form-control" :class="{ 'is-invalid': form.errors.has('ville') }">
+                                        <has-error :form="form" field="ville"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input v-model="form.latitude" placeholder="Latitude" type="text" name="latitude" class="form-control" :class="{ 'is-invalid': form.errors.has('latitude') }">
+                                        <has-error :form="form" field="latitude"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input v-model="form.longitude" placeholder="Longitude" type="text" name="longitude" class="form-control" :class="{ 'is-invalid': form.errors.has('longitude') }">
+                                        <has-error :form="form" field="longitude"></has-error>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -92,6 +108,8 @@
                 form: new Form({ 
                     id: '',
                     ville : '',
+                    latitude : '',
+                    longitude : '',
                 })
             }
         },

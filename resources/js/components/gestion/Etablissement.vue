@@ -79,7 +79,7 @@
                     <form @submit.prevent="editmode ? updateEtablissement() : createEtablissement()">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -147,21 +147,21 @@
                                         </div>                                    
                                         <div class="col-md-12">
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="tel">N° Tél.</label>
                                                         <input v-model="form.tel" placeholder="N° Tél." type="text" name="tel" class="form-control text-small" :class="{ 'form-control is-invalid': form.errors.has('tel') }">
                                                         <has-error :form="form" field="tel"></has-error>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="fax">Fax</label>
                                                         <input v-model="form.fax" placeholder="Fax" type="text" name="fax" class="form-control" :class="{ 'is-invalid': form.errors.has('fax') }">
                                                         <has-error :form="form" field="fax"></has-error>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="whatsapp">N° Whatsapp</label>
                                                         <input v-model="form.whatsapp" placeholder="N° Whatsapp" type="text" name="whatsapp" class="form-control" :class="{ 'is-invalid': form.errors.has('whatsapp') }">
@@ -170,6 +170,11 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -198,31 +203,44 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
+                                                <label for="adresse">Adresse</label>
+                                                <input v-model="form.adresse" placeholder="Adresse" type="text" name="adresse" class="form-control" :class="{ 'is-invalid': form.errors.has('adresse') }">
+                                                <has-error :form="form" field="adresse"></has-error>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <label for="maps">Maps</label>
                                                 <input v-model="form.maps" placeholder="https://www.google.com/maps" type="text" name="maps" class="form-control" :class="{ 'is-invalid': form.errors.has('maps') }">
                                                 <has-error :form="form" field="maps"></has-error>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="text-center">
-                                        <img class="img-fluid" :src="getPhotoEtablissement()" alt="">
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
                                         <div class="col-md-12">
-                                            <input type="file" @change="getPoto" class="form-control-file" id="inputPhoto">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input v-model="form.latitude" placeholder="Latitude" type="text" name="latitude" class="form-control" :class="{ 'is-invalid': form.errors.has('latitude') }">
+                                                        <has-error :form="form" field="latitude"></has-error>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input v-model="form.longitude" placeholder="Longitude" type="text" name="longitude" class="form-control" :class="{ 'is-invalid': form.errors.has('longitude') }">
+                                                        <has-error :form="form" field="longitude"></has-error>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="adresse">Adresse</label>
-                                        <input v-model="form.adresse" placeholder="Adresse" type="text" name="adresse" class="form-control" :class="{ 'is-invalid': form.errors.has('adresse') }">
-                                        <has-error :form="form" field="adresse"></has-error>
+                                        <div class="col-md-12">
+                                            <div class="text-center mb-1">
+                                                <img class="img-fluid" :src="getPhotoEtablissement()" alt="">
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12 mt-4">
+                                                    <input type="file" @change="getPhoto" class="form-control-file" id="inputPhoto">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -259,6 +277,8 @@
                     adresse: '',
                     zone_id: '',
                     ville_id: '',
+                    latitude: '',
+                    longitude: '',
                     photo: '',
                     tel: '',
                     fax: '',
@@ -304,7 +324,7 @@
                 return photo;
             },
 
-            getPoto(e){
+            getPhoto(e){
                 let file = e.target.files[0];
                 let reader = new FileReader();
                 if(file['size'] < 2111775){

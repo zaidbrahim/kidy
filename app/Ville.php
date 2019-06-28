@@ -10,7 +10,7 @@ class Ville extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'ville',
+        'ville', 'latitude', 'longitude'
     ];
 
     public function zones() {
