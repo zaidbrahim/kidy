@@ -19,9 +19,10 @@ class CreateEtablissementsTables extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('categorie_id')->unsigned()->nullable();
             $table->foreign('categorie_id')->references('id')->on('categories');
-            $table->string('nom_contact');
+            $table->string('nom_contact')->nullable();
             $table->string('email');
             $table->string('etablissement');
+            $table->longText('description');
             $table->string('adresse');
             $table->integer('zone_id')->unsigned()->nullable();
             $table->foreign('zone_id')->references('id')->on('zones');

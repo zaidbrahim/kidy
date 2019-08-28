@@ -40,13 +40,13 @@ class IndexController extends Controller
             ->where('favorie', 1)
             ->orderBy('id', 'asc')
             ->get();
-            
-        $countries = Ville::pluck("ville", "id")
+
+        $cities = Ville::pluck("ville", "id")
                     ->all(); 
     
         $niveaux = Niveau_etude::orderBy('id', 'asc')->get();
 
-    	return view('index', compact('etablissements', 'categories', 'villes', 'lasts', 'countries', 'niveaux'));
+    	return view('index', compact('etablissements', 'categories', 'villes', 'lasts', 'cities', 'niveaux'));
         
     }
 

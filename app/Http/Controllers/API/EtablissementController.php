@@ -33,17 +33,17 @@ class EtablissementController extends Controller
                     ->with('categorie')
                     ->paginate(10);
 
-            $villes = Ville::orderBy('ville','DESC')->get();
-            $zones = Zone::orderBy('zone','DESC')->get();
-            $categories = Categorie::orderBy('categorie','DESC')->get();
-            $niveau_etudes = Niveau_etude::orderBy('niveau', 'DESC')->get();
+            $villes         = Ville::orderBy('ville','DESC')->get();
+            $zones          = Zone::orderBy('zone','DESC')->get();
+            $categories     = Categorie::orderBy('categorie','DESC')->get();
+            $niveau_etudes  = Niveau_etude::orderBy('niveau', 'DESC')->get();
         
             return [
-               'etablissements' => $etablissements,
-               'villes' => $villes,
-               'zones' => $zones,
-               'categories' => $categories,
-               'niveau_etudes' => $niveau_etudes,
+               'etablissements'     => $etablissements,
+               'villes'             => $villes,
+               'zones'              => $zones,
+               'categories'         => $categories,
+               'niveau_etudes'      => $niveau_etudes,
             ];
         }
     }
@@ -58,17 +58,18 @@ class EtablissementController extends Controller
     {
         $this->validate($request, [
 
-            'zone_id' => 'required',
-            'ville_id' => 'required',
-            'categorie_id' => 'required',
-            //'email' => 'required|email',
-            'etablissement'=> 'required|min:3|max:255',
-            'nom_contact'=> 'required|min:3',
-            'tel'=> 'numeric',
-            'latitude'=> 'numeric',
-            'longitude'=> 'numeric',
-            //'fax'=> 'numeric',
-            //'whatsapp'=> 'numeric',
+            'zone_id'       => 'required',
+            'ville_id'      => 'required',
+            'categorie_id'  => 'required',
+            //'email'       => 'required|email',
+            'etablissement' => 'required|min:3|max:255',
+            'nom_contact'   => 'required|min:3',
+            'descirption'   => 'max:255|min:3',
+            'tel'           => 'numeric',
+            'latitude'      => 'numeric',
+            'longitude'     => 'numeric',
+            //'fax'         => 'numeric',
+            //'whatsapp'    => 'numeric',
         ]);
 
        // $checkbox = implode(",", $niveau_etude);
@@ -83,50 +84,27 @@ class EtablissementController extends Controller
         else{
             $name = "default.png";
         }
-        
-        // return Etablissement::create([
-
-        //     'categorie_id' => $request['categorie_id'],
-        //     'user_id' => auth('api')->user()->id,
-        //     'etablissement' => $request['etablissement'],
-        //     'nom_contact' => $request['nom_contact'],
-        //     'email' => $request['email'],
-        //     'adresse' => $request['adresse'],
-        //     'zone_id' => $request['zone_id'],
-        //     'ville_id' => $request['ville_id'],
-        //     'tel' => $request['tel'],
-        //     'fax' => $request['fax'],
-        //     'whatsapp' => $request['whatsapp'],
-        //     'maps' => $request['maps'],
-        //     'site_web' => $request['site_web'],
-        //     'photo' => $name
-        //     'mensualite_min' => $request['mensualite_min'],
-        //     'mensualite_max' => $request['mensualite_max'],
-        //     //'niveau_etude' => $checkbox,
-
-        // ]);
-
 
         $etablissement = new Etablissement();
 
-            $etablissement->categorie_id            = $request->categorie_id;
-            $etablissement->user_id                 = auth('api')->user()->id;
-            $etablissement->etablissement           = $request->etablissement;
-            $etablissement->nom_contact             = $request->nom_contact;
-            $etablissement->email                   = $request->email;
-            $etablissement->adresse                 = $request->adresse;
-            $etablissement->zone_id                 = $request->zone_id;
-            $etablissement->ville_id                = $request->ville_id;
-            $etablissement->latitude                = $request->latitude;
-            $etablissement->longitude               = $request->longitude;
-            $etablissement->tel                     = $request->tel;
-            $etablissement->fax                     = $request->fax;
-            $etablissement->whatsapp                = $request->whatsapp;
-            $etablissement->maps                    = $request->maps;
-            $etablissement->site_web                = $request->site_web;
-            $etablissement->photo                   = $name;
-            $etablissement->mensualite_min          = $request->mensualite_min;
-            $etablissement->mensualite_max          = $request->mensualite_max;
+            $etablissement->categorie_id      = $request->categorie_id;
+            $etablissement->user_id           = auth('api')->user()->id;
+            $etablissement->etablissement     = $request->etablissement;
+            //$etablissement->nom_contact       = $request->nom_contact;
+            $etablissement->email             = $request->email;
+            $etablissement->adresse           = $request->adresse;
+            $etablissement->zone_id           = $request->zone_id;
+            $etablissement->ville_id          = $request->ville_id;
+            $etablissement->latitude          = $request->latitude;
+            $etablissement->longitude         = $request->longitude;
+            $etablissement->tel               = $request->tel;
+            $etablissement->fax               = $request->fax;
+            $etablissement->whatsapp          = $request->whatsapp;
+            $etablissement->maps              = $request->maps;
+            $etablissement->site_web          = $request->site_web;
+            $etablissement->photo             = $name;
+            $etablissement->mensualite_min    = $request->mensualite_min;
+            $etablissement->mensualite_max    = $request->mensualite_max;
 
         $etablissement->save();
 
@@ -173,70 +151,48 @@ class EtablissementController extends Controller
 
         $this->validate($request, [
 
-            'zone_id' => 'required',
-            'ville_id' => 'required',
-            'categorie_id' => 'required',
-            //'email' => 'required|email',
-            'etablissement'=> 'required|min:3|max:255',
-            'nom_contact'=> 'required|min:3',
-            'tel'=> 'numeric',
-            //'fax'=> 'numeric',
-            //'whatsapp'=> 'numeric',
-
-            'latitude'=> 'numeric',
-            'longitude'=> 'numeric',
+            'zone_id'       => 'required',
+            'ville_id'      => 'required',
+            'categorie_id'  => 'required',
+            //'email'       => 'required|email',
+            'etablissement' => 'required|min:3|max:255',
+            'descirption'   => 'max:255|min:3',
+            //'nom_contact'   => 'required|min:3',
+            'tel'           => 'numeric',
+            //'fax'         => 'numeric',
+            //'whatsapp'    => 'numeric',
+            'latitude'      => 'numeric',
+            'longitude'     => 'numeric',
 
         ]);
 
-        // $etablissement->update($request->all());
-
-            $etablissement->categorie_id            = $request->categorie_id;
-            $etablissement->user_id                 = auth('api')->user()->id;
-            $etablissement->etablissement           = $request->etablissement;
-            $etablissement->nom_contact             = $request->nom_contact;
-            $etablissement->email                   = $request->email;
-            $etablissement->adresse                 = $request->adresse;
-            $etablissement->zone_id                 = $request->zone_id;
-            $etablissement->ville_id                = $request->ville_id;
-            $etablissement->latitude                = $request->latitude;
-            $etablissement->longitude               = $request->longitude;
-            $etablissement->tel                     = $request->tel;
-            $etablissement->fax                     = $request->fax;
-            $etablissement->whatsapp                = $request->whatsapp;
-            $etablissement->maps                    = $request->maps;
-            $etablissement->site_web                = $request->site_web;
-
+            $etablissement->categorie_id    = $request->categorie_id;
+            $etablissement->user_id         = auth('api')->user()->id;
+            $etablissement->etablissement   = $request->etablissement;
+            $etablissement->description     = $request->description;
+            $etablissement->nom_contact     = $request->nom_contact;
+            $etablissement->email           = $request->email;
+            $etablissement->adresse         = $request->adresse;
+            $etablissement->zone_id         = $request->zone_id;
+            $etablissement->ville_id        = $request->ville_id;
+            $etablissement->latitude        = $request->latitude;
+            $etablissement->longitude       = $request->longitude;
+            $etablissement->tel             = $request->tel;
+            $etablissement->fax             = $request->fax;
+            $etablissement->whatsapp        = $request->whatsapp;
+            $etablissement->maps            = $request->maps;
+            $etablissement->site_web        = $request->site_web;
             if($request->photo != $currentPhoto){
                 $etablissement->photo       = $name;
             }
-
             $etablissement->mensualite_min  = $request->mensualite_min;
             $etablissement->mensualite_max  = $request->mensualite_max;
 
             $etablissement->save();
-
-            //$niveaux = $request->input('niveau_etude_id');
-
-            // $etab = Etablissement_niveau_etude::where('etablissement_id', $id)->get();
-
-            // if($etab){
-            //     Etablissement_niveau_etude::where('etablissement_id', $id)->delete();
-            // }
             
             $etablissement->niveau_etudes()->detach();
 
             $etablissement->niveau_etudes()->attach($request->niveau_etude_id);
-            // foreach($niveaux as $niveau){
-
-            //     $nvs = new Etablissement_niveau_etude;
-            //     $nvs->etablissement_id = $id;
-            //     $nvs->niveau_etude_id = $niveau;
-            //     $nvs->save();
-                
-            
-
-            // }
-
 
         return ['message' => 'Etablissement modifié'];
     }
@@ -247,6 +203,7 @@ class EtablissementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
         $this->authorize('isAdminOrUser');
@@ -273,7 +230,9 @@ class EtablissementController extends Controller
                               ->where('ville', 'like', "'%$search%'");
                         });
             })
-
+            ->with('zone')
+            ->with('ville')
+            ->with('categorie')
             ->paginate(10);
 
         }
@@ -297,7 +256,5 @@ class EtablissementController extends Controller
             'zones' => $zones,
             'categories' => $categories,
         ];
-
-
     }
 }

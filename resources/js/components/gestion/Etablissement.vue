@@ -170,10 +170,18 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="descriptionOverview">Présentation</label>
+                                            <textarea name="description" v-model="form.description" class="form-control" :class="{ 'is-invalid': form.errors.has('description') }">
+
+                                            </textarea>
+                                            <has-error :form="form.description" field="description"></has-error>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
@@ -262,9 +270,15 @@
         data() {
             return {
                 editmode: false,
-                getdata : {},
-                
-                
+
+                getdata : {
+                    etablissements: {}, 
+                    villes: {},
+                    zones: {},
+                    categories: {},
+                    niveau_etudes: {},
+                },
+
                 form: new Form({ 
                     id: '',
                     categorie_id: '',
@@ -421,7 +435,6 @@
                 let query = this.$parent.search;  
                 axios.get('api/findEtablissement?q='+query)
                 .then((data) => {
-                    // this.getdata = data.data
                     this.getdata = data
                 })
                 .catch(() => {

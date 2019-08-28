@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -106,16 +105,12 @@ const app = new Vue({
     },
 
     methods: {
-
       searchit: _.debounce(() =>{
-
         Fire.$emit('searching')
-
       },1000),
 
       print() {
         window.print();
       }
-
     }
 });

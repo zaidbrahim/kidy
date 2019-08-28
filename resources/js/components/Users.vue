@@ -33,7 +33,7 @@
                                     <a href="#" @click="editModel(user)">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+                        
                                     <a href="#" @click="deleteUser(user.id)">
                                         <i class="fa fa-trash red"></i>
                                     </a>
@@ -162,7 +162,7 @@
                     this.$Progress.finish();
                 })
                 .catch(() => {
-
+                    this.$Progress.fail();
                 });
             },
 

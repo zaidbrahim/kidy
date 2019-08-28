@@ -39,7 +39,7 @@
                         <div class="col-lg-4 col-md-12">
                             <select class="form-control form-control-sm custom-select form-control form-control-sm" name="ville" id="ville">
                                 <option value="">Ville</option>
-                                @foreach($countries as $key => $value)
+                                @foreach($cities as $key => $value)
                                     <option value="{{ $key }}">{!! $value !!}</option>
                                 @endforeach
                             </select>
@@ -50,7 +50,7 @@
                             </select>
                         </div>
 
-                        <div class="col-lg-12 text-right mt-100">
+                        <div class="col-lg-12 text-right mar-top-20">
                             <div class="submit_btn">
                                 <button class="btn v3" type="submit"><i class="ion-search" aria-hidden="true"></i> Chercher</button>
                             </div>
@@ -66,7 +66,7 @@
         $(document).ready(function(){
             $('select[name="ville"]').on('change', function(){
                 var villeID = $(this).val();
-                if(villeID){  
+                if(villeID){
                     $.ajax({
                         url: '/getZones/'+villeID,
                         type: 'GET',

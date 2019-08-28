@@ -16,7 +16,6 @@ class CreateEtablissementNiveauEtudeTables extends Migration
         Schema::create('etablissement_niveau_etude', function (Blueprint $table) {
             $table->integer('etablissement_id')->unsigned()->index();
             $table->foreign('etablissement_id')->references('id')->on('etablissements')->onDelete('cascade');
-
             $table->integer('niveau_etude_id')->unsigned()->index();
             $table->foreign('niveau_etude_id')->references('id')->on('niveau_etudes')->onDelete('cascade');
 

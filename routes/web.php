@@ -32,6 +32,7 @@ Route::get('/maps','MapController@index');
 
 
 Route::get('/annuaire','AnnuaireController@index')->name('annuaire.index');
+Route::get('/annuaire/{id}','AnnuaireController@show')->name('annuaire.show');
 Route::get('/annuaire/categories/{categorie?}','AnnuaireController@getCategories')->name('annuaire.categorie');
 Route::get('/annuaire/villes/{ville?}','AnnuaireController@getVilles')->name('annuaire.ville');
 Route::get('/search','AnnuaireController@search')->name('search');

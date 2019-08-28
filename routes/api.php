@@ -32,3 +32,4 @@ Route::get('findCategorie', 'API\CategorieController@search');
 Route::get('findVille', 'API\VilleController@search');
 Route::get('findZone', 'API\ZoneController@search');
 Route::get('findEtablissement', 'API\EtablissementController@search');
+
